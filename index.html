@@ -1,49 +1,185 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>생명을 향한 여정</title>
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>생명을 향한 여정</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#dfe9df;font-family:system-ui,"Noto Sans KR",sans-serif;color:#293b31}.game{max-width:1200px;margin:18px auto;background:#fffdf6;border:8px solid #fff8e9;border-radius:18px;overflow:hidden;box-shadow:0 18px 50px #193a2d35}.hud{height:62px;display:flex;justify-content:space-between;align-items:center;padding:0 22px}.brand{font-weight:900;color:#245d47;font-size:14px}.brand small{display:block;font-size:9px;letter-spacing:.15em;color:#829188}.stats{display:flex;gap:8px;align-items:center}.stat{background:#f1ebdc;border-radius:30px;padding:7px 11px;font-size:12px;font-weight:850}.steps{display:flex;gap:4px}.step{width:21px;height:21px;border-radius:50%;background:#e4e9e2;color:#738078;display:grid;place-items:center;font-size:10px;font-weight:900}.step.active{background:#2d7955;color:white}.step.done{background:#b7d5bd;color:#245d47}
-.world{height:650px;position:relative;overflow:hidden;background:linear-gradient(#78c8e9 0 47%,#c5e69c 47% 66%,#d5b477 66%);transition:filter .3s}.world.fade{filter:brightness(.2)}.clouds{position:absolute;inset:0 0 45%;background:radial-gradient(ellipse at 15% 25%,#fff9 0 6%,transparent 6.5%),radial-gradient(ellipse at 21% 20%,#fff9 0 8%,transparent 8.5%),radial-gradient(ellipse at 78% 17%,#fff9 0 7%,transparent 7.5%)}.hill{position:absolute;bottom:28%;left:-5%;width:110%;height:30%;background:linear-gradient(160deg,transparent 0 20%,#77b56b 20% 52%,transparent 52%),linear-gradient(15deg,transparent 0 24%,#5e9b60 24% 60%,transparent 60%)}.decor{position:absolute;bottom:28%;font-size:90px;filter:drop-shadow(3px 4px 2px #344b3555)}.d1{left:4%}.d2{right:7%}.house{left:27%;font-size:78px}.temple{right:28%;font-size:66px}.road{position:absolute;bottom:0;left:-5%;width:110%;height:34%;background:linear-gradient(#d8bd84,#b88c56);border-top:7px solid #89985c}.road:after{content:"";position:absolute;top:52%;width:100%;border-top:4px dashed #f8e5b9}.fence{position:absolute;bottom:29%;height:22px;left:0;right:0;border-block:5px solid #806342;background:repeating-linear-gradient(90deg,transparent 0 45px,#806342 46px 53px,transparent 54px 90px)}
-.loc{position:absolute;top:15px;left:18px;background:#173d35ce;color:white;border-radius:30px;padding:8px 13px;font-size:11px;font-weight:900}.bubble{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:min(540px,76%);background:#fff9e9;border:2px solid #e5c88d;border-radius:22px;text-align:center;padding:14px 18px;box-shadow:0 6px 18px #233b2d40;z-index:4}.bubble:after{content:"";position:absolute;bottom:-11px;left:50%;width:18px;height:18px;background:#fff9e9;border-right:2px solid #e5c88d;border-bottom:2px solid #e5c88d;transform:translateX(-50%) rotate(45deg)}.speaker{font-size:10px;font-weight:900;letter-spacing:.12em;color:#8a754c}.bubble h2{font-size:21px;margin:4px 0}.bubble p{font-size:12px;margin:0;color:#687268}
-.char{position:absolute;z-index:3;bottom:16%;left:43%;font-size:120px;filter:drop-shadow(4px 5px 2px #263a2d66);animation:bob 1.7s infinite}.npc{position:absolute;z-index:3;bottom:19%;left:15%;font-size:80px;filter:drop-shadow(3px 4px 2px #263a2d66)}.npcname{position:absolute;z-index:4;bottom:31%;left:12%;background:#365c45d9;color:white;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:900}.hospital{display:none;position:absolute;z-index:2;right:8%;bottom:28%;font-size:135px;filter:drop-shadow(3px 4px 2px #3335)}.hospital.show{display:block}.vehicle{position:absolute;z-index:5;bottom:14%;left:-25%;font-size:95px;transition:left 1.3s}.vehicle.go{left:105%}@keyframes bob{50%{transform:translateY(-7px)}}
-.choices{position:absolute;z-index:6;bottom:4%;left:4%;right:4%;display:flex;justify-content:center;gap:12px}.choice{flex:1;max-width:300px;min-height:92px;border:2px solid #a87a42;border-radius:14px;background:linear-gradient(145deg,#fff1cf,#e9c58e);box-shadow:0 6px 0 #78512e,0 9px 14px #243c2b55;padding:10px;text-align:left;cursor:pointer;color:#49351e}.choice:nth-child(2){background:linear-gradient(145deg,#f6f4d9,#d9dfa7);border-color:#87954e;box-shadow:0 6px 0 #66713b,0 9px 14px #243c2b55}.choice:nth-child(3){background:linear-gradient(145deg,#f9e8ef,#e5bfd1);border-color:#a16d8b;box-shadow:0 6px 0 #754d68,0 9px 14px #243c2b55}.choice:hover{transform:translateY(-6px)}.choice .ico{font-size:26px;float:left;margin:0 9px 18px 0}.choice strong{font-size:14px;display:block}.choice small{font-size:11px;color:#695a47;display:block;margin-top:4px}.choice:disabled{opacity:.5;cursor:default}
-.notice{display:none;position:absolute;z-index:8;bottom:5%;left:50%;transform:translateX(-50%);width:min(510px,90%);background:#fffaf0;border:2px solid #e4c989;border-radius:16px;padding:13px 16px;box-shadow:0 8px 24px #263a2d55}.notice.show{display:block}.notice b{color:#2b6849;display:block}.notice p{font-size:12px;margin:4px 0;color:#5d685f}.next{border:0;background:#2c684a;color:white;border-radius:9px;padding:8px 13px;margin-top:6px;font-weight:850;cursor:pointer}.end{display:none;position:absolute;z-index:10;inset:0;background:#163c32ed;color:white;place-items:center;text-align:center;padding:25px}.end.show{display:grid}.endcard{max-width:580px}.endcard .emoji{font-size:60px}.end h2{font-size:30px}.end p{line-height:1.7;color:#e1eee5}.end blockquote{padding:18px;background:#ffffff18;border-radius:14px;font-weight:850}.end button{border:0;border-radius:30px;padding:12px 22px;background:#f1d18e;font-weight:900;cursor:pointer}
-@media(max-width:650px){.game{margin:0;border:0;border-radius:0;min-height:100vh}.hud{height:58px;padding:0 10px}.brand{font-size:11px}.brand small{font-size:8px}.stat{font-size:10px;padding:5px 7px}.step{width:17px;height:17px;font-size:9px}.world{height:calc(100vh - 58px);min-height:700px}.bubble{top:62px;width:90%;padding:12px}.bubble h2{font-size:17px}.loc{top:10px;left:10px}.char{left:39%;bottom:25%;font-size:100px}.npc{left:4%;bottom:25%;font-size:65px}.npcname{left:3%;bottom:37%}.hospital{right:3%;bottom:32%;font-size:90px}.choices{left:10px;right:10px;bottom:3%;display:grid;gap:8px}.choice{max-width:none;min-height:58px;padding:7px 11px;display:grid;grid-template-columns:35px 1fr;align-items:center}.choice .ico{float:none;margin:0;grid-row:1/3}.choice strong{font-size:13px}.choice small{font-size:10px;margin-top:0}.notice{bottom:4%;width:92%}}
-</style></head><body><main class="game"><header class="hud"><div class="brand">✚ HEBRON MEDICAL CENTER<small>20TH ANNIVERSARY · A JOURNEY FOR LIFE</small></div><div class="stats"><span class="stat" id="money">🪙 15</span><span class="stat" id="clock">🕒 08:00</span><div class="steps" id="steps"></div></div></header>
-<section class="world" id="world"><div class="clouds"></div><div class="hill"></div><div class="decor d1">🌴</div><div class="decor d2">🌴</div><div class="decor house" id="house">🏡</div><div class="decor temple" id="temple">🛕</div><div class="road"></div><div class="fence"></div><div class="loc" id="loc">📍 캄보디아 농촌 마을</div>
-<div class="bubble"><div class="speaker" id="speaker">MAYA · MAIN CHARACTER</div><h2 id="title">아픈 가족을 병원에 데려가야 해요.</h2><p id="subtitle">어떤 방법으로 이동하면 좋을까요?</p></div><div class="npc" id="npc">👵</div><div class="npcname" id="npcname">마을 할머니</div><div class="char" id="char">👧🏻</div><div class="hospital" id="hospital">🏥</div><div class="vehicle" id="vehicle"></div><div class="choices" id="choices"></div>
-<div class="notice" id="notice"><b id="noticeTitle"></b><p id="noticeText"></p><button class="next" id="next">다음 장면으로 이동 →</button></div>
-<div class="end" id="end"><div class="endcard"><div class="emoji" id="endEmoji">🌱</div><h2 id="endTitle"></h2><p id="endText"></p><blockquote id="endQuote"></blockquote><button id="restart">처음부터 다시하기</button></div></div></section></main>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0f1a14;color:#f4efe0;font-family:system-ui,"Noto Sans KR",sans-serif}
+body{display:flex;justify-content:center}
+#game{position:relative;width:min(100vw,960px,calc((100vh - 210px)*2));min-width:320px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+#stage{position:relative;line-height:0}
+canvas{display:block;width:100%;aspect-ratio:2/1;image-rendering:pixelated;background:#222}
+#hud{position:absolute;left:6px;top:6px;display:flex;gap:6px;align-items:center;line-height:1;font-size:12px;font-weight:800}
+.ib,#loc{background:#173d35d9;border:2px solid #4f8f78;padding:4px 7px}
+#loc{position:absolute;right:6px;top:6px;line-height:1;font-size:11px;font-weight:800}
+.st{display:inline-block;width:8px;height:8px;margin-right:3px;background:#3b5a4c}.st.a{background:#f1d18e}.st.d{background:#7fc29b}
+#pad{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:space-between;padding:0 8px;pointer-events:none}
+#pad div{display:flex;gap:6px}
+#pad button{pointer-events:auto;width:46px;height:46px;font-size:18px;border:2px solid #4f8f78;background:#173d35b0;color:#fff;opacity:.75}
+@media(hover:hover) and (pointer:fine){#pad{display:none}}
+#box{min-height:170px;padding:10px 12px;background:#1b2c22;border:3px solid #6f8f5f;border-top:0;line-height:1.4}
+#sp{font-size:10px;letter-spacing:.12em;font-weight:800;color:#e5c88d}
+#tt{margin:2px 0;font-size:17px}
+#st2{margin:0;font-size:12px;color:#cfdccf}
+#ch{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;margin-top:8px}
+.c{display:flex;gap:8px;align-items:center;text-align:left;font:inherit;padding:8px 10px;cursor:pointer;color:#49351e;border:2px solid #a87a42;background:linear-gradient(145deg,#fff1cf,#e9c58e);box-shadow:0 3px 0 #78512e}
+.c:nth-child(2){background:linear-gradient(145deg,#f6f4d9,#d9dfa7);border-color:#87954e;box-shadow:0 3px 0 #66713b}
+.c:nth-child(3){background:linear-gradient(145deg,#f9e8ef,#e5bfd1);border-color:#a16d8b;box-shadow:0 3px 0 #754d68}
+.c .i{font-size:22px}.c b{display:block;font-size:13px}.c small{font-size:11px;color:#695a47}
+#hint{margin-top:8px;font-size:12px;font-weight:700;color:#f1d18e}
+#end{display:none;position:absolute;inset:0;z-index:9;overflow:auto;background:#163c32f2;text-align:center;padding:24px;place-items:center}
+#end.show{display:grid}
+#end .e{font-size:54px}#end h2{font-size:26px}#end p{line-height:1.7;color:#e1eee5;max-width:560px;margin:8px auto}
+#end blockquote{margin:14px auto;max-width:560px;padding:16px;background:#ffffff18;font-weight:800}
+#end button{border:0;padding:12px 22px;background:#f1d18e;font-weight:900;cursor:pointer;font-family:inherit}
+</style></head><body>
+<main id="game">
+<div id="stage"><canvas id="cv" width="320" height="160"></canvas>
+<div id="hud"><span class="ib">🪙 <b id="m">15</b></span><span class="ib">🕒 <b id="c">08:00</b></span><span id="steps"></span></div><div id="loc"></div>
+<div id="pad"><div><button id="L">◀</button><button id="R">▶</button></div><div><button id="A">✋</button></div></div></div>
+<div id="box"><div id="sp"></div><h2 id="tt"></h2><p id="st2"></p><div id="ch"></div><div id="hint"></div></div>
+<div id="end"><div><div class="e" id="ee"></div><h2 id="et"></h2><p id="ex"></p><blockquote id="eq"></blockquote><button id="re">처음부터 다시하기</button></div></div>
+</main>
 <script>
-const $=id=>document.getElementById(id);
-const scenes=[
-{loc:"캄보디아 농촌 마을",speaker:"MAYA",npc:"👵",npcname:"마을 할머니",title:"아픈 가족을 병원에 데려가야 해요.",subtitle:"병원까지 어떤 방법으로 이동할까요?",choices:[
+const $=i=>document.getElementById(i),g=$('cv').getContext('2d');
+const VW=320,GY=122,FY=140,W=900,SK='#f0c6a0';
+const R=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(Math.round(x),Math.round(y),w,h)};
+const rnd=n=>{n=Math.sin(n*127.1+311.7)*43758.5453;return n-Math.floor(n)};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ME={h:'#2a1f2d',t:'#cfe8f3',b:'#4a5675',l:'#e0b898'};
+const TH=[
+{sky:['#bfe6a6','#eef2c0'],far:'#a6c98e',ft:'#8fb57c',mid:'#6a9f5c',tr:'#3f6b3d',gr:'#6aa543',dt:'#a98458'},
+{sky:['#aee0e8','#f3f0c8'],far:'#9cc79a',ft:'#86b386',mid:'#5f9a64',tr:'#3d6a46',gr:'#78ad4a',dt:'#c4a06a'},
+{sky:['#8fd0ee','#e2f1e6'],far:'#a9cfa0',ft:'#93bb8c',mid:'#6fa86a',tr:'#427048',gr:'#7ab552',dt:'#c9b48a'},
+{in:1,wall:'#e8eee2',wd:'#c4d6c0',fl:'#b9a47c'},
+{in:1,wall:'#f3ead8',wd:'#d9c9a6',fl:'#c2a77d'}];
+/* 선택지: [제목,설명,아이콘,비용,시간(분),결과제목,결과설명,키] */
+const S=[
+{loc:'캄보디아 농촌 마을',sp:'MAYA',nm:'마을 할머니',nx:330,th:0,npc:{h:'#d8d8d8',t:'#b5653d',b:'#7a4a2c',l:'#d9b08c'},t:'아픈 가족을 병원에 데려가야 해요.',s:'병원까지 어떤 방법으로 이동할까요?',c:[
 ["오토바이 택시","빠르지만 비용이 더 들어요.","🛵",3,2,"오토바이 택시를 선택했어요.","빠르게 이동할 수 있지만 교통비 3을 지출했습니다.","motor"],
 ["버스 정류장으로","저렴하지만 기다려야 해요.","🚌",2,4,"버스를 타기로 했어요.","버스를 기다리는 시간이 필요하지만 교통비를 아꼈습니다.","bus"],
 ["걸어서 이동","돈은 들지 않지만 먼 길이에요.","🚶",0,8,"걸어서 가기로 했어요.","교통비는 아꼈지만 병원까지 오랜 시간이 걸립니다.","walk"]]},
-{loc:"마을에서 병원으로 가는 길",speaker:"MAYA",npc:"🧑",npcname:"길에서 만난 주민",title:"아직 병원까지 거리가 남았어요.",subtitle:"이동 중 비용과 시간을 어떻게 조절할까요?",choices:[
+{loc:'마을에서 병원으로 가는 길',sp:'MAYA',nm:'길에서 만난 주민',nx:400,th:1,npc:{h:'#2b2018',t:'#4f7a5a',b:'#3c4a3a',l:'#d9b08c'},t:'아직 병원까지 거리가 남았어요.',s:'이동 중 비용과 시간을 어떻게 조절할까요?',c:[
 ["가족에게 도움 요청","교통비를 부탁합니다.","📞",0,2,"가족에게 연락했어요.","가족과 연락하며 이동 방법을 다시 확인합니다.","call"],
 ["가진 돈으로 계속 이동","남은 비용을 확인하고 출발합니다.","🪙",1,3,"이동을 계속합니다.","가진 돈 안에서 이동을 이어갑니다.","go"],
 ["잠시 쉬었다 출발","몸을 쉬게 하고 다시 길을 나섭니다.","🌳",0,5,"잠시 쉬어 가기로 했어요.","시간은 더 걸리지만 무리하지 않고 이동합니다.","rest"]]},
-{loc:"헤브론의료원 · 접수",speaker:"접수 직원",npc:"👩🏻‍💼",npcname:"접수 직원",title:"헤브론의료원에 도착했습니다.",subtitle:"접수 직원이 환자의 상태를 확인합니다.",choices:[
+{loc:'헤브론의료원 · 접수',sp:'접수 직원',nm:'접수 직원',nx:555,th:2,npc:{h:'#2a1f1a',t:'#f2f2f2',b:'#2f8c82',l:'#d9b08c'},t:'헤브론의료원에 도착했습니다.',s:'접수 직원이 환자의 상태를 확인합니다.',c:[
 ["바로 진료 접수하기","증상을 설명하고 접수합니다.","📋",0,2,"진료 접수를 진행합니다.","접수가 완료되었습니다. 의료진의 안내를 기다립니다.","reg"],
 ["진료비 먼저 문의하기","예상 비용과 절차를 확인합니다.","💬",0,3,"진료비를 문의했습니다.","비용과 진료 절차를 확인한 뒤 접수를 이어갑니다.","ask"],
 ["가족과 상의하기","가족에게 현재 상황을 알립니다.","📱",0,4,"가족과 상의하기로 했어요.","가족과 연락하는 동안 시간이 조금 더 지났습니다.","fam"]]},
-{loc:"헤브론의료원 · 진료실",speaker:"의료진",npc:"👨🏻‍⚕️",npcname:"의사",title:"의료진이 환자의 상태를 살펴봅니다.",subtitle:"필요한 검사와 치료에 대해 설명을 듣습니다.",choices:[
+{loc:'헤브론의료원 · 진료실',sp:'의료진',nm:'의사',nx:470,th:3,npc:{h:'#222',t:'#fff',b:'#fff',l:'#4a5675'},t:'의료진이 환자의 상태를 살펴봅니다.',s:'필요한 검사와 치료에 대해 설명을 듣습니다.',c:[
 ["안내받은 검사 진행","설명에 따라 필요한 검사를 받습니다.","🩺",0,3,"검사를 진행합니다.","검사 결과를 바탕으로 치료 계획을 세웁니다.","test"],
 ["치료 방법과 비용 상담","가능한 방법과 비용을 상의합니다.","💬",0,3,"치료 방법을 상담합니다.","환자 상황에 맞는 진료 계획을 함께 확인합니다.","talk"],
 ["검사를 미루기","비용 부담으로 검사를 나중으로 미룹니다.","⏳",0,5,"검사를 미루기로 했습니다.","필요한 진료가 늦어질 수 있어 의료진과 다시 상의해야 합니다.","delay"]]},
-{loc:"헤브론의료원 · 치료 이후",speaker:"간호사",npc:"👩🏻‍⚕️",npcname:"간호사",title:"치료 이후에도 돌봄은 계속됩니다.",subtitle:"회복을 위해 이후 관리와 재방문 계획을 세웁니다.",choices:[
+{loc:'헤브론의료원 · 치료 이후',sp:'간호사',nm:'간호사',nx:580,th:4,npc:{h:'#5a3b2a',t:'#f6d9e2',b:'#f6d9e2',l:'#d9b08c'},t:'치료 이후에도 돌봄은 계속됩니다.',s:'회복을 위해 이후 관리와 재방문 계획을 세웁니다.',c:[
 ["재방문 일정 확인하기","병원과 연결을 이어갑니다.","📅",0,2,"재방문 계획을 세웠습니다.","치료 이후에도 필요한 관리를 이어갈 수 있도록 합니다.","follow"],
 ["가족과 함께 회복 관리","가족과 회복 과정을 살핍니다.","❤️",0,2,"가족과 함께 회복을 살핍니다.","가족의 돌봄과 의료진의 안내를 연결합니다.","home"],
 ["거리와 비용 때문에 미루기","후속 진료를 나중으로 미룹니다.","🛣️",0,4,"재방문을 미루기로 했습니다.","거리와 비용은 치료 이후에도 부담으로 남을 수 있습니다.","skip"]]}];
-let idx=0,money=15,mins=0,care=0,locked=false;
-function hud(){$("money").textContent="🪙 "+money;$("clock").textContent="🕒 "+String(8+Math.floor(mins/60)).padStart(2,"0")+":"+String(mins%60).padStart(2,"0");$("steps").innerHTML=scenes.map((s,i)=>`<span class="step ${i<idx?'done':i===idx?'active':''}">${i+1}</span>`).join("")}
-function render(){locked=false;let s=scenes[idx];$("loc").textContent="📍 "+s.loc;$("speaker").textContent=s.speaker;$("npc").textContent=s.npc;$("npcname").textContent=s.npcname;$("title").textContent=s.title;$("subtitle").textContent=s.subtitle;$("hospital").classList.toggle("show",idx>=2);$("temple").style.display=idx>=2?"none":"block";$("house").textContent=idx>=2?"🏥":"🏡";$("notice").classList.remove("show");$("vehicle").className="vehicle";$("vehicle").textContent="";$("choices").innerHTML="";
-s.choices.forEach((c,i)=>{let b=document.createElement("button");b.className="choice";b.innerHTML=`<span class="ico">${c[2]}</span><span><strong>${c[0]}</strong><small>${c[1]}</small></span>`;b.onclick=()=>select(i);$("choices").appendChild(b)});hud()}
-function select(i){if(locked)return;locked=true;let c=scenes[idx].choices[i];money=Math.max(0,money-c[3]);mins+=c[4];if(idx>=2&&i===0)care+=2;else if(i===1)care++;
-[...$("choices").children].forEach((b,n)=>{b.disabled=true;b.style.opacity=n===i?"1":".45"});
-if(idx===0&&(c[7]==="motor"||c[7]==="bus")){$("vehicle").textContent=c[7]==="motor"?"🛵":"🚌";$("vehicle").classList.add("go")}
-$("char").style.animation="bob .5s infinite";$("noticeTitle").textContent=c[5];$("noticeText").textContent=c[6];$("next").textContent=idx===scenes.length-1?"여정의 결과 보기 →":"다음 장면으로 이동 →";$("notice").classList.add("show");hud()}
-$("next").onclick=()=>{if(!locked)return;if(idx<scenes.length-1){idx++;$("world").classList.add("fade");setTimeout(()=>{$("world").classList.remove("fade");render()},250)}else finish()};
-function finish(){let t,tx,q,e;if(care>=6){e="🌱";t="치료를 향한 여정을 이어갔습니다.";tx="먼 길을 이동하고 여러 선택을 거쳐 의료진을 만났습니다. 병원에 도착하는 것부터 치료 이후의 관리까지 환자에게는 많은 도움이 필요합니다.";q="가까운 곳에서 필요한 의료서비스를 받을 수 있다는 것. 누군가에게는 당연한 일이지만, 누군가에게는 간절한 바람입니다."}else if(care>=3){e="🧭";t="쉽지 않은 선택의 연속이었습니다.";tx="시간과 비용을 고려하며 선택해야 했습니다. 의료 접근성은 병원이 있는 것만으로 완성되지 않습니다.";q="아픈 사람이 치료를 포기하지 않도록, 의료가 필요한 곳에 닿아야 합니다."}else{e="🌧️";t="병원에 가는 길은 멀고 험했습니다.";tx="거리와 비용은 병원에 도착하기 전부터 치료 이후까지 큰 부담이 될 수 있습니다.";q="병원이 있다는 것과 누구나 병원에 갈 수 있다는 것은 다릅니다."}$("endEmoji").textContent=e;$("endTitle").textContent=t;$("endText").textContent=tx;$("endQuote").textContent=q;$("end").classList.add("show")}
-$("restart").onclick=()=>{$("end").classList.remove("show");idx=0;money=15;mins=0;care=0;render()};render();
-</script></section></main></body></html>
+
+let idx=0,money=15,mins=0,care=0,mode='walk',done=false,riding=false,px=40,cam=0,dir=1,mv=0,fx=20,vx=0,vk='',vsp=0,fa=0,fdir=1,T=0,lastHint='';
+const K={l:0,r:0};
+const vg=g.createLinearGradient(0,0,0,50);vg.addColorStop(0,'rgba(10,20,10,.45)');vg.addColorStop(1,'rgba(10,20,10,0)');
+
+/* ---------- 스프라이트 ---------- */
+function person(x,y,c,d,m){x=Math.round(x);y=Math.round(y);const f=m?(T>>3)&1:0;
+ R(x-4,y-6+f,3,6-f,c.l);R(x+1,y-5-f,3,5+f,c.l);
+ R(x-4,y-15,9,10,c.t);R(x-4,y-9,9,5,c.b);R(x-6,y-14,2,7,c.t);R(x+5,y-14,2,7,c.t);
+ R(x-4,y-22,9,8,SK);R(x-5,y-24,11,4,c.h);R(d>0?x-5:x+3,y-22,3,9,c.h);R(x+(d>0?2:-2),y-19,1,2,'#222')}
+function fox(x,y,d,m){x=Math.round(x);const f=m?(T>>3)&1:0,hx=d>0?x+4:x-8,tx=d>0?x-9:x+5;
+ R(x-5,y-7,10,5,'#e7c46a');R(hx,y-10,5,5,'#e7c46a');R(hx,y-12,2,2,'#c9a24e');R(hx+3,y-12,2,2,'#c9a24e');R(d>0?hx+3:hx+1,y-8,1,1,'#222');
+ R(tx,y-9-f,5,3,'#f4e6b0');R(x-4,y-2,2,2,'#c9a24e');R(x+2,y-2,2,2,'#c9a24e')}
+function vehicle(){const x=Math.round(vx-cam),y=FY;
+ if(vk=='motor'){person(x,y-4,ME,1,0);R(x-12,y-9,24,4,'#c0392b');R(x-14,y-5,8,8,'#222');R(x+7,y-5,8,8,'#222');R(x+5,y-14,3,6,'#555')}
+ else{R(x-34,y-30,68,28,'#e8b930');R(x-34,y-12,68,3,'#c0392b');for(let k=0;k<5;k++)R(x-30+k*13,y-26,10,9,'#9fd0e3');R(x-26,y-5,10,8,'#222');R(x+16,y-5,10,8,'#222')}}
+
+/* ---------- 배경 소품 ---------- */
+function hut(x){const y=GY+4;R(x,y-24,44,24,'#b08a5c');for(let i=0;i<9;i++)R(x-8+i*2,y-26-i*2,60-i*4,2,i%2?'#6b8e3a':'#7da048');R(x+17,y-15,9,15,'#5a3d28');R(x+4,y-17,8,7,'#9fd0e3');R(x+32,y-17,8,7,'#9fd0e3')}
+function palm(x){R(x,GY-36,4,42,'#7d5e3d');R(x-12,GY-40,14,3,'#4c8a3c');R(x+3,GY-40,14,3,'#4c8a3c');R(x-8,GY-44,20,3,'#5ea84a');R(x-3,GY-48,10,3,'#5ea84a');R(x-14,GY-37,5,3,'#4c8a3c');R(x+9,GY-37,5,3,'#4c8a3c')}
+function fence(){for(let k=0;k<W/24;k++)R(k*24-cam,GY-12,3,16,'#7d5e3d');R(-cam,GY-9,W,2,'#9a7a52');R(-cam,GY-3,W,2,'#9a7a52')}
+function bus(x){R(x,GY-38,3,44,'#666');R(x-14,GY-40,32,5,'#c0392b');R(x+8,GY-6,22,3,'#8a6a43');R(x+9,GY-3,2,8,'#6b4a2f');R(x+27,GY-3,2,8,'#6b4a2f')}
+function hosp(x){const y=GY+5;R(x,y-72,150,72,'#f3f0e4');R(x-5,y-78,160,8,'#2d7955');R(x+64,y-68,22,22,'#2d7955');R(x+73,y-65,4,16,'#fff');R(x+67,y-59,16,4,'#fff');
+ for(const k of[14,104]){R(x+k,y-44,32,20,'#9fd0e3');R(x+k+15,y-44,2,20,'#e9efe3')}R(x+58,y-28,34,28,'#6aa6a0');R(x+74,y-28,2,28,'#e9efe3');R(x+52,y-3,46,3,'#cfc7b0')}
+function cab(x){R(x,GY-50,36,56,'#c9b79a');R(x+2,GY-48,32,24,'#a9c9cf');R(x+2,GY-22,32,22,'#d6c6a8');R(x+16,GY-14,4,2,'#6b4a2f')}
+function sign(x){R(x,36,22,22,'#2d7955');R(x+9,39,4,16,'#fff');R(x+3,45,16,4,'#fff')}
+function bed(x){R(x,FY-14,60,4,'#e7ecee');R(x,FY-10,60,8,'#6aa6a0');R(x-2,FY-22,3,22,'#8a6a43');R(x+59,FY-18,3,18,'#8a6a43');R(x+3,FY-18,14,5,'#fff')}
+function props(){const o=cam;
+ if(idx==0){hut(120-o);palm(470-o);palm(700-o);palm(820-o)}
+ else if(idx==1){fence();palm(170-o);palm(640-o);bus(480-o)}
+ else if(idx==2){palm(200-o);palm(380-o);hosp(480-o);palm(780-o)}
+ else if(idx==3){cab(150-o);cab(210-o);sign(330-o)}
+ else{sign(120-o);bed(320-o)}}
+
+/* ---------- 배경 ---------- */
+function forest(par,c1,c2,sp,w,seed,h){const o=cam*par;
+ for(let i=Math.floor(o/sp)-1;i<=Math.floor((o+VW)/sp)+1;i++){const r=rnd(i*7+seed),x=Math.round(i*sp+r*sp*.6-o),cy=h+r*22;
+  R(x,0,w,GY+3,c2);R(x-w,cy-6,w*3,8,c1);R(x-w*2,cy,w*5,8,c1);R(x-w*3,cy+8,w*7,7,c1)}}
+function rays(){g.fillStyle='rgba(255,246,190,.11)';
+ for(let k=0;k<4;k++){const x=((k*95-cam*.15+Math.sin(T/90+k)*4)%400+400)%400-40;g.beginPath();g.moveTo(x,0);g.lineTo(x+26,0);g.lineTo(x-34,GY);g.lineTo(x-62,GY);g.fill()}}
+function outdoor(th){const gr=g.createLinearGradient(0,0,0,GY);gr.addColorStop(0,th.sky[0]);gr.addColorStop(1,th.sky[1]);g.fillStyle=gr;g.fillRect(0,0,VW,GY+1);
+ forest(.25,th.far,th.ft,70,3,1,6);forest(.55,th.mid,th.tr,52,4,5,14);rays();
+ R(0,GY,VW,6,th.gr);R(0,GY+6,VW,40,th.dt);
+ for(let k=Math.floor(cam/8);k<cam/8+42;k++)if(rnd(k)>.55){R(k*8-cam,GY-2,2,2,th.gr);R(k*8+3-cam,GY+9+rnd(k+4)*20,3,1,'#00000022')}}
+function indoor(th){R(0,0,VW,GY,th.wall);R(0,GY-30,VW,30,th.wd);R(0,GY-31,VW,2,'#0002');
+ R(0,GY,VW,40,th.fl);for(let k=Math.floor(cam/30);k<cam/30+12;k++)R(k*30-cam,GY,1,40,'#0002');R(0,GY+14,VW,1,'#0002');R(0,GY+28,VW,1,'#0002');
+ for(let k=0;k<5;k++){const x=90+k*210-cam;if(x<-80||x>VW)continue;
+  R(x-2,24,40,50,'#8aa28f');R(x,26,36,46,'#9fd0e3');R(x+17,26,2,46,'#8aa28f');R(x,47,36,2,'#8aa28f');
+  g.fillStyle='rgba(255,246,190,.14)';g.beginPath();g.moveTo(x,GY);g.lineTo(x+36,GY);g.lineTo(x+78,GY+36);g.lineTo(x+40,GY+36);g.fill()}}
+
+/* ---------- 렌더 ---------- */
+function render(){const s=S[idx],th=TH[s.th],o=cam;
+ th.in?indoor(th):outdoor(th);props();
+ const nd=px<s.nx?1:-1,bob=Math.round(Math.sin(T/12)*2);
+ person(s.nx-o,FY,s.npc,idx==3?-1:nd,0);
+ if(!done&&mode!='fade'){R(s.nx-o-1,FY-36+bob,2,5,'#ffe58a');R(s.nx-o-1,FY-29+bob,2,2,'#ffe58a')}
+ if(!riding){const fd=px>fx?1:-1;fox(fx-o,FY,fd,Math.abs(px-fx)>24&&mv);person(px-o,FY,ME,dir,mv)}else vehicle();
+ if(idx==3){R(s.nx-20-o,FY-12,40,3,'#8a6a43');R(s.nx-18-o,FY-9,36,10,'#a67c52')}
+ if(done&&!riding){const ax=W-30-o+Math.round(Math.sin(T/8)*2);g.fillStyle='rgba(255,229,138,.18)';g.fillRect(W-24-o,GY-30,24,60);for(let i=0;i<5;i++)R(ax+i*2,FY-44+i,2,10-2*i,'#ffe58a')}
+ if(!th.in)for(let i=0;i<28;i++){const x=((rnd(i)*VW-cam*.5+T*.05*(1+rnd(i+9)))%VW+VW)%VW,y=rnd(i+3)*GY+Math.sin(T/40+i)*3;g.fillStyle='rgba(255,255,220,'+(.3+.4*Math.abs(Math.sin(T/30+i)))+')';g.fillRect(Math.round(x),Math.round(y),1,1)}
+ g.fillStyle=vg;g.fillRect(0,0,VW,50);
+ if(fa>0){g.fillStyle='rgba(0,0,0,'+fa+')';g.fillRect(0,0,VW,160)}}
+
+/* ---------- 로직 ---------- */
+function hint(t){if(t!==lastHint){lastHint=t;$('hint').textContent=t}}
+function hud(){$('m').textContent=money;$('c').textContent=String(8+Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0');
+ $('steps').innerHTML=S.map((_,i)=>'<i class="st '+(i<idx?'d':i==idx?'a':'')+'"></i>').join('')}
+function load(){const s=S[idx];px=40;cam=0;fx=20;done=false;riding=false;$('loc').textContent='📍 '+s.loc;$('sp').textContent=s.sp;$('tt').textContent=s.t;$('st2').textContent=s.s;$('ch').innerHTML='';lastHint='';hud()}
+function act(){const s=S[idx];if(mode=='walk'&&!done&&Math.abs(px-s.nx)<30)talk()}
+function talk(){mode='talk';$('ch').innerHTML=S[idx].c.map((c,i)=>'<button class="c" data-i="'+i+'"><span class="i">'+c[2]+'</span><span><b>'+c[0]+'</b><small>'+c[1]+'</small></span></button>').join('');hint('선택지를 누르거나 1·2·3 키를 누르세요')}
+function pick(i){if(mode!='talk')return;const c=S[idx].c[i];
+ money=Math.max(0,money-c[3]);mins+=c[4];if(idx>=2&&i==0)care+=2;else if(i==1)care++;
+ $('tt').textContent=c[5];$('st2').textContent=c[6];$('ch').innerHTML='';done=true;hud();
+ if(idx==0&&c[7]!='walk'){mode='ride';riding=true;vx=px;vk=c[7];vsp=vk=='motor'?2.6:1.8;hint('이동 중…')}
+ else{mode='walk';hint(idx==S.length-1?'→ 오른쪽 끝으로 가서 여정의 결과를 확인하세요':'→ 오른쪽 끝으로 이동해 다음 장소로 가세요')}}
+function leave(){if(mode=='fade'||mode=='end')return;if(idx==S.length-1){mode='end';finish();return}mode='fade';fa=0;fdir=1}
+function update(dt){T+=dt;const s=S[idx];
+ if(mode=='walk'){const v=(K.r-K.l)*1.5*dt;mv=v!=0;if(v){px=clamp(px+v,12,W-12);dir=v>0?1:-1}
+  if(!done)hint(Math.abs(px-s.nx)<30?'💬 [E] / [Space] / ✋ 버튼으로 말 걸기':'← → 로 걸어가 '+s.nm+'에게 다가가세요');
+  else if(px>=W-26)leave()}
+ else mv=0;
+ if(mode=='ride'){vx+=vsp*dt;if(vx>W+40)leave()}
+ cam+=(clamp((riding?vx:px)-VW/2,0,W-VW)-cam)*Math.min(1,.12*dt);
+ fx+=(px-dir*18-fx)*Math.min(1,.06*dt);
+ if(mode=='fade'){fa+=.035*dt*fdir;if(fdir>0&&fa>=1){fa=1;idx++;load();fdir=-1}else if(fdir<0&&fa<=0){fa=0;mode='walk'}}}
+function finish(){let t,x,q,e;
+ if(care>=6){e='🌱';t='치료를 향한 여정을 이어갔습니다.';x='먼 길을 이동하고 여러 선택을 거쳐 의료진을 만났습니다. 병원에 도착하는 것부터 치료 이후의 관리까지 환자에게는 많은 도움이 필요합니다.';q='가까운 곳에서 필요한 의료서비스를 받을 수 있다는 것. 누군가에게는 당연한 일이지만, 누군가에게는 간절한 바람입니다.'}
+ else if(care>=3){e='🧭';t='쉽지 않은 선택의 연속이었습니다.';x='시간과 비용을 고려하며 선택해야 했습니다. 의료 접근성은 병원이 있는 것만으로 완성되지 않습니다.';q='아픈 사람이 치료를 포기하지 않도록, 의료가 필요한 곳에 닿아야 합니다.'}
+ else{e='🌧️';t='병원에 가는 길은 멀고 험했습니다.';x='거리와 비용은 병원에 도착하기 전부터 치료 이후까지 큰 부담이 될 수 있습니다.';q='병원이 있다는 것과 누구나 병원에 갈 수 있다는 것은 다릅니다.'}
+ $('ee').textContent=e;$('et').textContent=t;$('ex').textContent=x;$('eq').textContent=q;$('end').classList.add('show')}
+$('re').onclick=()=>{$('end').classList.remove('show');idx=0;money=15;mins=0;care=0;mode='walk';load()};
+
+/* ---------- 입력 ---------- */
+addEventListener('keydown',e=>{const k=e.key;
+ if(k=='ArrowLeft'||k=='a'||k=='A')K.l=1;else if(k=='ArrowRight'||k=='d'||k=='D')K.r=1;
+ else if((k=='e'||k=='E'||k==' '||k=='Enter')&&!e.repeat){act();e.preventDefault()}
+ else if(k=='1'||k=='2'||k=='3')pick(+k-1)});
+addEventListener('keyup',e=>{const k=e.key;if(k=='ArrowLeft'||k=='a'||k=='A')K.l=0;if(k=='ArrowRight'||k=='d'||k=='D')K.r=0});
+$('ch').addEventListener('click',e=>{const b=e.target.closest('.c');if(b)pick(+b.dataset.i)});
+function hold(id,key){const b=$(id),on=e=>{e.preventDefault();K[key]=1},off=()=>{K[key]=0};b.addEventListener('pointerdown',on);['pointerup','pointerleave','pointercancel'].forEach(n=>b.addEventListener(n,off))}
+hold('L','l');hold('R','r');$('A').addEventListener('pointerdown',e=>{e.preventDefault();act()});
+addEventListener('blur',()=>{K.l=K.r=0});
+
+load();
+let last=performance.now();
+(function loop(now){const dt=Math.min(3,(now-last)/16.67);last=now;update(dt);render();requestAnimationFrame(loop)})(last);
+</script>
+</body></html>
