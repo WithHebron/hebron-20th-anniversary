@@ -1,150 +1,49 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#244d3c">
-<title>생명을 향한 여정 | 헤브론의료원 20주년</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>생명을 향한 여정</title>
 <style>
-:root{--green:#245b43;--cream:#fff8e9;--ink:#263b31}
-*{box-sizing:border-box}
-body{margin:0;background:#e9eee7;color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
-button{font:inherit}
-.app{min-height:100vh;padding:18px;display:grid;place-items:center}
-.game{width:min(1180px,100%);background:#fffdf7;border-radius:24px;overflow:hidden;box-shadow:0 18px 55px #1d392b30}
-.topbar{height:62px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fffdf7}
-.brand{font-weight:900;color:var(--green);letter-spacing:.03em;font-size:14px}
-.brand small{font-weight:600;color:#718078;margin-left:8px}
-.progress{display:flex;align-items:center;gap:7px}
-.dot{width:24px;height:24px;border-radius:50%;background:#e4e9e2;color:#728078;display:grid;place-items:center;font-size:11px;font-weight:800}
-.dot.done{background:var(--green);color:white}
-.dot.current{outline:3px solid #c6e0ce;background:#3f8a62;color:white}
-.scene{height:min(690px,calc(100vh - 120px));min-height:570px;position:relative;background:#7cae72 url("cambodia-crossroads.png") center 52%/cover no-repeat;overflow:hidden}
-.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,39,25,.20),transparent 35%,transparent 60%,rgba(20,35,22,.30));pointer-events:none}
-.title{position:absolute;z-index:2;top:22px;left:26px;color:white;text-shadow:0 2px 8px #172a1e99}
-.title .eyebrow{font-size:11px;letter-spacing:.16em;font-weight:900;color:#e6f5d9}
-.title h1{font-size:clamp(24px,4vw,39px);line-height:1.15;margin:5px 0}
-.title p{margin:0;font-size:13px;color:#f5f7e9}
-.location{position:absolute;z-index:2;right:24px;top:24px;background:#173b2dc9;color:white;padding:9px 14px;border-radius:99px;font-size:12px;font-weight:800;backdrop-filter:blur(5px)}
-.dialogue{position:absolute;z-index:3;top:17%;left:50%;transform:translateX(-50%);width:min(540px,78%);background:#fff9eb;border:2px solid #e6c98e;border-radius:22px;padding:17px 22px;text-align:center;box-shadow:0 8px 24px #172a1e25}
-.dialogue:after{content:"";position:absolute;left:50%;bottom:-13px;width:22px;height:22px;background:#fff9eb;border-right:2px solid #e6c98e;border-bottom:2px solid #e6c98e;transform:translateX(-50%) rotate(45deg)}
-.dialogue .step{font-size:11px;color:#8a7045;font-weight:900;letter-spacing:.1em}
-.dialogue h2{font-size:clamp(17px,2.4vw,23px);line-height:1.45;margin:5px 0 4px}
-.dialogue p{font-size:13px;color:#6e6b5e;margin:0}
-.signs{position:absolute;z-index:4;left:3%;right:3%;bottom:6%;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:end}
-.path{min-height:138px;border:3px solid #9a6738;border-radius:16px;background:linear-gradient(145deg,#fff0ce,#e9c18a);box-shadow:0 9px 0 #724a2b,0 14px 22px #172a1e55;color:#46301e;text-align:left;padding:14px 15px;cursor:pointer;position:relative;transition:transform .16s,filter .16s}
-.path:nth-child(2){transform:translateY(-18px);background:linear-gradient(145deg,#f4f5d7,#d7d99b);border-color:#89914e;box-shadow:0 9px 0 #626b3b,0 14px 22px #172a1e55}
-.path:nth-child(3){background:linear-gradient(145deg,#f8e5f0,#dfb4cc);border-color:#9d6383;box-shadow:0 9px 0 #70435d,0 14px 22px #172a1e55}
-.path:hover,.path:focus-visible{transform:translateY(-7px);filter:brightness(1.05);outline:3px solid white}
-.path:nth-child(2):hover,.path:nth-child(2):focus-visible{transform:translateY(-25px)}
-.path:disabled{cursor:default;opacity:.68}
-.path .num{font-size:11px;font-weight:900;opacity:.7;letter-spacing:.08em}
-.path strong{display:block;font-size:clamp(14px,1.6vw,18px);line-height:1.35;margin:6px 0}
-.path small{font-size:12px;line-height:1.35;display:block;color:#624e3d}
-.path .arrow{position:absolute;right:12px;bottom:10px;width:26px;height:26px;border-radius:50%;background:#654426;color:white;display:grid;place-items:center;font-size:16px}
-.bottomline{position:absolute;z-index:3;bottom:17px;left:22px;color:white;font-size:12px;text-shadow:0 1px 5px #172a1e}
-.result{position:absolute;z-index:8;inset:0;background:#173d31eF;display:none;place-items:center;padding:22px;color:white;text-align:center}
-.result.show{display:grid}
-.result-card{max-width:570px}
-.result .emoji{font-size:54px}
-.result h2{font-size:clamp(24px,4vw,34px);margin:8px 0}
-.result p{color:#e4eee5;line-height:1.75}
-.result blockquote{margin:22px 0;padding:17px;background:#ffffff18;border-radius:14px;font-weight:800}
-.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.actions button{border:0;border-radius:99px;padding:12px 22px;font-weight:900;cursor:pointer}
-.primary{background:#f4d18b;color:#49361d}
-.secondary{background:#ffffff22;color:white;border:1px solid #ffffff70!important}
-.toast{position:absolute;z-index:6;left:50%;bottom:18%;transform:translateX(-50%);width:min(520px,86%);padding:15px 19px;background:#fffdf2;border:2px solid #d8c28d;border-radius:16px;box-shadow:0 8px 28px #162b1c55;display:none}
-.toast.show{display:block}
-.toast b{display:block;color:#2e6549;margin-bottom:4px}
-.toast p{margin:0;font-size:13px;color:#5c665d}
-.continue{margin-top:10px;border:0;border-radius:9px;background:#285e45;color:white;padding:8px 15px;font-weight:800;cursor:pointer}
-@media(max-width:680px){
- .app{padding:0}.game{border-radius:0;min-height:100vh}.topbar{height:58px;padding:0 13px}.brand{font-size:11px}.brand small{display:none}.dot{width:20px;height:20px;font-size:10px}
- .scene{height:calc(100vh - 58px);min-height:690px;background-position:54% center}
- .title{top:14px;left:15px}.title h1{font-size:24px}.title p{font-size:11px}.location{right:12px;top:15px;font-size:10px;padding:7px 10px}
- .dialogue{top:17%;width:88%;padding:13px 15px}.dialogue h2{font-size:17px}
- .signs{left:12px;right:12px;bottom:4%;grid-template-columns:1fr;gap:9px}
- .path,.path:nth-child(2),.path:nth-child(3){min-height:67px;padding:9px 14px;transform:none;display:grid;grid-template-columns:32px 1fr 25px;align-items:center;gap:8px}
- .path strong{font-size:14px;margin:0}.path small{font-size:11px;grid-column:2}.path .num{grid-row:1/3}.path .arrow{position:static;grid-column:3;grid-row:1/3}
- .path:hover,.path:nth-child(2):hover{transform:translateY(-2px)}
- .bottomline{display:none}.toast{bottom:24%;width:90%}
-}
-</style>
-</head>
-<body>
-<div class="app"><main class="game">
-<header class="topbar">
- <div class="brand">✚ HEBRON MEDICAL CENTER <small>20th ANNIVERSARY</small></div>
- <div class="progress" id="progress" aria-label="진행 단계"></div>
-</header>
-<section class="scene">
- <div class="title"><div class="eyebrow">ZONE 1 · INTERACTIVE JOURNEY</div><h1>생명을 향한 여정</h1><p>당신의 선택이 누군가의 희망이 됩니다.</p></div>
- <div class="location">📍 캄보디아 농촌 마을</div>
- <div class="dialogue" id="dialogue"><div class="step" id="step">STEP 01</div><h2 id="question">병원까지 어떻게 이동할까요?</h2><p id="subtext">갈림길 앞에서 당신의 선택을 기다립니다.</p></div>
- <div class="signs" id="signs"></div>
- <div class="toast" id="toast"><b id="toastTitle"></b><p id="toastText"></p><button class="continue" id="continue">이 길로 계속 가기 →</button></div>
- <div class="bottomline">당신의 선택에 따라 환자의 여정이 달라집니다.</div>
- <div class="result" id="result"><div class="result-card"><div class="emoji" id="endEmoji">🌱</div><div class="eyebrow">JOURNEY COMPLETE</div><h2 id="endTitle"></h2><p id="endText"></p><blockquote id="endQuote"></blockquote><div class="actions"><button class="primary" id="again">다시 체험하기</button><button class="secondary" id="close">체험 마치기</button></div></div></div>
-</section>
-</main></div>
+*{box-sizing:border-box}body{margin:0;background:#dfe9df;font-family:system-ui,"Noto Sans KR",sans-serif;color:#293b31}.game{max-width:1200px;margin:18px auto;background:#fffdf6;border:8px solid #fff8e9;border-radius:18px;overflow:hidden;box-shadow:0 18px 50px #193a2d35}.hud{height:62px;display:flex;justify-content:space-between;align-items:center;padding:0 22px}.brand{font-weight:900;color:#245d47;font-size:14px}.brand small{display:block;font-size:9px;letter-spacing:.15em;color:#829188}.stats{display:flex;gap:8px;align-items:center}.stat{background:#f1ebdc;border-radius:30px;padding:7px 11px;font-size:12px;font-weight:850}.steps{display:flex;gap:4px}.step{width:21px;height:21px;border-radius:50%;background:#e4e9e2;color:#738078;display:grid;place-items:center;font-size:10px;font-weight:900}.step.active{background:#2d7955;color:white}.step.done{background:#b7d5bd;color:#245d47}
+.world{height:650px;position:relative;overflow:hidden;background:linear-gradient(#78c8e9 0 47%,#c5e69c 47% 66%,#d5b477 66%);transition:filter .3s}.world.fade{filter:brightness(.2)}.clouds{position:absolute;inset:0 0 45%;background:radial-gradient(ellipse at 15% 25%,#fff9 0 6%,transparent 6.5%),radial-gradient(ellipse at 21% 20%,#fff9 0 8%,transparent 8.5%),radial-gradient(ellipse at 78% 17%,#fff9 0 7%,transparent 7.5%)}.hill{position:absolute;bottom:28%;left:-5%;width:110%;height:30%;background:linear-gradient(160deg,transparent 0 20%,#77b56b 20% 52%,transparent 52%),linear-gradient(15deg,transparent 0 24%,#5e9b60 24% 60%,transparent 60%)}.decor{position:absolute;bottom:28%;font-size:90px;filter:drop-shadow(3px 4px 2px #344b3555)}.d1{left:4%}.d2{right:7%}.house{left:27%;font-size:78px}.temple{right:28%;font-size:66px}.road{position:absolute;bottom:0;left:-5%;width:110%;height:34%;background:linear-gradient(#d8bd84,#b88c56);border-top:7px solid #89985c}.road:after{content:"";position:absolute;top:52%;width:100%;border-top:4px dashed #f8e5b9}.fence{position:absolute;bottom:29%;height:22px;left:0;right:0;border-block:5px solid #806342;background:repeating-linear-gradient(90deg,transparent 0 45px,#806342 46px 53px,transparent 54px 90px)}
+.loc{position:absolute;top:15px;left:18px;background:#173d35ce;color:white;border-radius:30px;padding:8px 13px;font-size:11px;font-weight:900}.bubble{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:min(540px,76%);background:#fff9e9;border:2px solid #e5c88d;border-radius:22px;text-align:center;padding:14px 18px;box-shadow:0 6px 18px #233b2d40;z-index:4}.bubble:after{content:"";position:absolute;bottom:-11px;left:50%;width:18px;height:18px;background:#fff9e9;border-right:2px solid #e5c88d;border-bottom:2px solid #e5c88d;transform:translateX(-50%) rotate(45deg)}.speaker{font-size:10px;font-weight:900;letter-spacing:.12em;color:#8a754c}.bubble h2{font-size:21px;margin:4px 0}.bubble p{font-size:12px;margin:0;color:#687268}
+.char{position:absolute;z-index:3;bottom:16%;left:43%;font-size:120px;filter:drop-shadow(4px 5px 2px #263a2d66);animation:bob 1.7s infinite}.npc{position:absolute;z-index:3;bottom:19%;left:15%;font-size:80px;filter:drop-shadow(3px 4px 2px #263a2d66)}.npcname{position:absolute;z-index:4;bottom:31%;left:12%;background:#365c45d9;color:white;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:900}.hospital{display:none;position:absolute;z-index:2;right:8%;bottom:28%;font-size:135px;filter:drop-shadow(3px 4px 2px #3335)}.hospital.show{display:block}.vehicle{position:absolute;z-index:5;bottom:14%;left:-25%;font-size:95px;transition:left 1.3s}.vehicle.go{left:105%}@keyframes bob{50%{transform:translateY(-7px)}}
+.choices{position:absolute;z-index:6;bottom:4%;left:4%;right:4%;display:flex;justify-content:center;gap:12px}.choice{flex:1;max-width:300px;min-height:92px;border:2px solid #a87a42;border-radius:14px;background:linear-gradient(145deg,#fff1cf,#e9c58e);box-shadow:0 6px 0 #78512e,0 9px 14px #243c2b55;padding:10px;text-align:left;cursor:pointer;color:#49351e}.choice:nth-child(2){background:linear-gradient(145deg,#f6f4d9,#d9dfa7);border-color:#87954e;box-shadow:0 6px 0 #66713b,0 9px 14px #243c2b55}.choice:nth-child(3){background:linear-gradient(145deg,#f9e8ef,#e5bfd1);border-color:#a16d8b;box-shadow:0 6px 0 #754d68,0 9px 14px #243c2b55}.choice:hover{transform:translateY(-6px)}.choice .ico{font-size:26px;float:left;margin:0 9px 18px 0}.choice strong{font-size:14px;display:block}.choice small{font-size:11px;color:#695a47;display:block;margin-top:4px}.choice:disabled{opacity:.5;cursor:default}
+.notice{display:none;position:absolute;z-index:8;bottom:5%;left:50%;transform:translateX(-50%);width:min(510px,90%);background:#fffaf0;border:2px solid #e4c989;border-radius:16px;padding:13px 16px;box-shadow:0 8px 24px #263a2d55}.notice.show{display:block}.notice b{color:#2b6849;display:block}.notice p{font-size:12px;margin:4px 0;color:#5d685f}.next{border:0;background:#2c684a;color:white;border-radius:9px;padding:8px 13px;margin-top:6px;font-weight:850;cursor:pointer}.end{display:none;position:absolute;z-index:10;inset:0;background:#163c32ed;color:white;place-items:center;text-align:center;padding:25px}.end.show{display:grid}.endcard{max-width:580px}.endcard .emoji{font-size:60px}.end h2{font-size:30px}.end p{line-height:1.7;color:#e1eee5}.end blockquote{padding:18px;background:#ffffff18;border-radius:14px;font-weight:850}.end button{border:0;border-radius:30px;padding:12px 22px;background:#f1d18e;font-weight:900;cursor:pointer}
+@media(max-width:650px){.game{margin:0;border:0;border-radius:0;min-height:100vh}.hud{height:58px;padding:0 10px}.brand{font-size:11px}.brand small{font-size:8px}.stat{font-size:10px;padding:5px 7px}.step{width:17px;height:17px;font-size:9px}.world{height:calc(100vh - 58px);min-height:700px}.bubble{top:62px;width:90%;padding:12px}.bubble h2{font-size:17px}.loc{top:10px;left:10px}.char{left:39%;bottom:25%;font-size:100px}.npc{left:4%;bottom:25%;font-size:65px}.npcname{left:3%;bottom:37%}.hospital{right:3%;bottom:32%;font-size:90px}.choices{left:10px;right:10px;bottom:3%;display:grid;gap:8px}.choice{max-width:none;min-height:58px;padding:7px 11px;display:grid;grid-template-columns:35px 1fr;align-items:center}.choice .ico{float:none;margin:0;grid-row:1/3}.choice strong{font-size:13px}.choice small{font-size:10px;margin-top:0}.notice{bottom:4%;width:92%}}
+</style></head><body><main class="game"><header class="hud"><div class="brand">✚ HEBRON MEDICAL CENTER<small>20TH ANNIVERSARY · A JOURNEY FOR LIFE</small></div><div class="stats"><span class="stat" id="money">🪙 15</span><span class="stat" id="clock">🕒 08:00</span><div class="steps" id="steps"></div></div></header>
+<section class="world" id="world"><div class="clouds"></div><div class="hill"></div><div class="decor d1">🌴</div><div class="decor d2">🌴</div><div class="decor house" id="house">🏡</div><div class="decor temple" id="temple">🛕</div><div class="road"></div><div class="fence"></div><div class="loc" id="loc">📍 캄보디아 농촌 마을</div>
+<div class="bubble"><div class="speaker" id="speaker">MAYA · MAIN CHARACTER</div><h2 id="title">아픈 가족을 병원에 데려가야 해요.</h2><p id="subtitle">어떤 방법으로 이동하면 좋을까요?</p></div><div class="npc" id="npc">👵</div><div class="npcname" id="npcname">마을 할머니</div><div class="char" id="char">👧🏻</div><div class="hospital" id="hospital">🏥</div><div class="vehicle" id="vehicle"></div><div class="choices" id="choices"></div>
+<div class="notice" id="notice"><b id="noticeTitle"></b><p id="noticeText"></p><button class="next" id="next">다음 장면으로 이동 →</button></div>
+<div class="end" id="end"><div class="endcard"><div class="emoji" id="endEmoji">🌱</div><h2 id="endTitle"></h2><p id="endText"></p><blockquote id="endQuote"></blockquote><button id="restart">처음부터 다시하기</button></div></div></section></main>
 <script>
-const stages=[
- {q:"병원까지 어떻게 이동할까요?",sub:"몸이 아픈 가족을 데리고 먼 병원까지 가야 합니다.",choices:[
-  ["오토바이 택시","빠르게 이동하지만 비용이 더 듭니다.","🚕","이동 시간을 줄일 수 있지만 교통비 부담이 생깁니다.","빠른 이동을 선택했습니다.","병원에 조금 더 빨리 도착할 수 있지만, 이동비가 부담으로 남습니다."],
-  ["버스","비용을 아낄 수 있지만 시간이 더 걸립니다.","🚌","운행 시간과 환승을 고려해야 합니다.","버스를 기다리기로 했습니다.","비용을 줄이는 대신 병원까지 가는 데 더 많은 시간이 필요합니다."],
-  ["걸어서 이동","교통비는 들지 않지만 먼 길을 걸어야 합니다.","🚶","이동 시간이 길어지고 몸이 지칠 수 있습니다.","걸어서 가기로 했습니다.","교통비는 아꼈지만 이동에 오랜 시간이 걸릴 수 있습니다."]
- ]},
- {q:"병원까지 갈 교통비가 부족합니다.",sub:"가지고 있는 돈은 많지 않습니다. 어떻게 할까요?",choices:[
-  ["가족에게 도움 요청","가족과 상의해 교통비를 마련합니다.","👪","도움을 요청하고 기다리는 시간이 필요합니다.","가족에게 도움을 요청했습니다.","함께 부담을 나누어 병원으로 향할 수 있게 되었습니다."],
-  ["비용을 마련해 출발","당장 지출이 생기지만 이동을 이어갑니다.","💵","생활비에 부담이 생길 수 있습니다.","필요한 비용을 마련했습니다.","병원으로 이동할 수 있지만 가계에는 부담이 남습니다."],
-  ["돈이 생길 때까지 기다리기","지출은 피하지만 병원 방문이 늦어집니다.","⏳","진료를 받는 시점이 미뤄질 수 있습니다.","출발을 미루기로 했습니다.","비용 문제로 치료를 시작하기까지 시간이 더 필요해졌습니다."]
- ]},
- {q:"병원에 도착했습니다. 이제 어떻게 할까요?",sub:"진료비가 걱정되지만 몸 상태를 확인해야 합니다.",choices:[
-  ["진료 접수하기","의료진에게 증상을 설명하고 진료를 시작합니다.","🏥","필요한 진료와 다음 절차를 안내받습니다.","진료 접수를 선택했습니다.","의료진과 상담하며 필요한 진료 과정을 확인합니다."],
-  ["진료비 먼저 확인하기","예상 비용을 확인한 뒤 계획을 세웁니다.","🧾","비용을 확인하는 시간이 필요합니다.","진료비를 먼저 확인했습니다.","비용을 파악해 이후 진료 계획을 세우기로 합니다."],
-  ["진료를 포기하고 돌아가기","비용 부담 때문에 진료를 받지 않기로 합니다.","↩️","필요한 진료를 받지 못할 수 있습니다.","병원을 떠나기로 했습니다.","병원에 도착했지만 비용 장벽 때문에 진료를 받지 못했습니다."]
- ]},
- {q:"검사와 치료 방법을 선택해야 합니다.",sub:"의료진이 필요한 검사와 치료 과정을 설명합니다.",choices:[
-  ["안내받은 치료 진행","의료진과 상의한 계획에 따라 진행합니다.","🩺","환자 상태에 맞는 진료 과정을 밟습니다.","검사와 치료를 진행합니다.","의료진의 설명을 듣고 필요한 진료를 이어갑니다."],
-  ["비용과 방법 상담하기","부담 가능한 방법과 우선순위를 상의합니다.","💬","상담 시간이 필요하지만 선택지를 확인할 수 있습니다.","가능한 방법을 함께 살펴봅니다.","상황에 맞는 진료 계획을 의료진과 상의합니다."],
-  ["검사를 미루기","당장 지출은 줄지만 진료가 늦어질 수 있습니다.","⌛","필요한 진료가 지연될 가능성이 있습니다.","검사를 미루기로 했습니다.","비용 부담이 치료 과정에 영향을 미치는 상황입니다."]
- ]},
- {q:"치료를 받은 뒤, 이제 어떻게 할까요?",sub:"회복을 위해서는 이후 관리와 재방문이 필요할 수 있습니다.",choices:[
-  ["안내된 일정에 재방문","병원과 연결을 이어가며 회복을 살핍니다.","🌱","후속 진료 계획을 세웁니다.","재방문 계획을 세웠습니다.","치료 이후에도 필요한 관리를 이어갈 수 있도록 합니다."],
-  ["가족과 함께 회복 관리","가족과 상태를 살피고 필요할 때 병원에 연락합니다.","❤️","일상에서 돌봄을 이어갑니다.","가족과 함께 회복을 살핍니다.","가족의 돌봄과 의료진의 안내를 연결하기로 합니다."],
-  ["비용과 거리 때문에 미루기","당장의 부담은 줄지만 후속 진료가 늦어질 수 있습니다.","🛣️","병원과의 거리가 계속 부담으로 남습니다.","재방문을 미루기로 했습니다.","치료 이후에도 거리와 비용은 큰 장벽이 될 수 있습니다."]
- ]}
-];
-let step=0, chosen=false, score=0;
 const $=id=>document.getElementById(id);
-function drawProgress(){ $("progress").innerHTML=stages.map((_,i)=>`<span class="dot ${i<step?'done':i===step?'current':''}">${i+1}</span>`).join("");}
-function render(){
- chosen=false;drawProgress();$("step").textContent=`STEP 0${step+1}`;
- $("question").textContent=stages[step].q;$("subtext").textContent=stages[step].sub;
- $("toast").classList.remove("show");$("signs").innerHTML="";
- stages[step].choices.forEach((c,i)=>{
-  const b=document.createElement("button");b.className="path";b.type="button";
-  b.innerHTML=`<span class="num">PATH 0${i+1}</span><span><strong>${c[0]}</strong><small>${c[1]}</small></span><span class="arrow">›</span>`;
-  b.addEventListener("click",()=>select(i));$("signs").appendChild(b);
- });
-}
-function select(i){
- if(chosen)return;chosen=true;const c=stages[step].choices[i];score+=i===0?2:i===1?1:0;
- [...$("signs").children].forEach((b,n)=>{b.disabled=true;b.style.opacity=n===i?"1":".5";});
- $("toastTitle").textContent=c[4];$("toastText").textContent=c[5];$("toast").classList.add("show");
- $("continue").textContent=step===stages.length-1?"여정의 결과 보기 →":"다음 갈림길로 →";
-}
-$("continue").addEventListener("click",()=>{if(!chosen)return;if(step<stages.length-1){step++;render()}else finish()});
-function finish(){
- $("result").classList.add("show");
- let title,copy,quote,emoji;
- if(score>=7){emoji="🌱";title="치료를 향한 여정을 이어갔습니다";copy="여러 갈림길에서 쉽지 않은 결정을 내렸습니다. 환자의 의지만으로 해결하기 어려운 거리와 비용의 장벽도 마주했습니다.";quote="가까운 곳에서 필요한 의료서비스를 받을 수 있다는 것. 누군가에게는 당연한 일이지만, 누군가에게는 간절한 바람입니다."}
- else if(score>=4){emoji="🧭";title="선택의 갈림길은 계속되었습니다";copy="이동부터 치료 이후까지, 시간과 비용을 고려해야 했습니다. 의료 접근성은 병원이 있는 것만으로 완성되지 않습니다.";quote="아픈 사람이 치료를 포기하지 않도록, 의료가 필요한 곳에 닿아야 합니다."}
- else{emoji="🌧️";title="병원에 가는 길은 멀고 험했습니다";copy="거리와 비용은 병원에 도착하기 전부터 치료 이후까지 큰 부담이 될 수 있습니다.";quote="병원이 있다는 것과 누구나 병원에 갈 수 있다는 것은 다릅니다."}
- $("endEmoji").textContent=emoji;$("endTitle").textContent=title;$("endText").textContent=copy;$("endQuote").textContent=quote;
-}
-function reset(){$("result").classList.remove("show");step=0;score=0;render();}
-$("again").addEventListener("click",reset);$("close").addEventListener("click",()=>{$("result").classList.remove("show");$("question").textContent="당신의 선택이 누군가의 희망이 됩니다."; $("subtext").textContent="체험해 주셔서 감사합니다. 헤브론의료원은 의료가 필요한 이웃 곁에 함께합니다."; $("signs").innerHTML="";$("toast").classList.remove("show");});
-render();
-</script>
-</body></html>
+const scenes=[
+{loc:"캄보디아 농촌 마을",speaker:"MAYA",npc:"👵",npcname:"마을 할머니",title:"아픈 가족을 병원에 데려가야 해요.",subtitle:"병원까지 어떤 방법으로 이동할까요?",choices:[
+["오토바이 택시","빠르지만 비용이 더 들어요.","🛵",3,2,"오토바이 택시를 선택했어요.","빠르게 이동할 수 있지만 교통비 3을 지출했습니다.","motor"],
+["버스 정류장으로","저렴하지만 기다려야 해요.","🚌",2,4,"버스를 타기로 했어요.","버스를 기다리는 시간이 필요하지만 교통비를 아꼈습니다.","bus"],
+["걸어서 이동","돈은 들지 않지만 먼 길이에요.","🚶",0,8,"걸어서 가기로 했어요.","교통비는 아꼈지만 병원까지 오랜 시간이 걸립니다.","walk"]]},
+{loc:"마을에서 병원으로 가는 길",speaker:"MAYA",npc:"🧑",npcname:"길에서 만난 주민",title:"아직 병원까지 거리가 남았어요.",subtitle:"이동 중 비용과 시간을 어떻게 조절할까요?",choices:[
+["가족에게 도움 요청","교통비를 부탁합니다.","📞",0,2,"가족에게 연락했어요.","가족과 연락하며 이동 방법을 다시 확인합니다.","call"],
+["가진 돈으로 계속 이동","남은 비용을 확인하고 출발합니다.","🪙",1,3,"이동을 계속합니다.","가진 돈 안에서 이동을 이어갑니다.","go"],
+["잠시 쉬었다 출발","몸을 쉬게 하고 다시 길을 나섭니다.","🌳",0,5,"잠시 쉬어 가기로 했어요.","시간은 더 걸리지만 무리하지 않고 이동합니다.","rest"]]},
+{loc:"헤브론의료원 · 접수",speaker:"접수 직원",npc:"👩🏻‍💼",npcname:"접수 직원",title:"헤브론의료원에 도착했습니다.",subtitle:"접수 직원이 환자의 상태를 확인합니다.",choices:[
+["바로 진료 접수하기","증상을 설명하고 접수합니다.","📋",0,2,"진료 접수를 진행합니다.","접수가 완료되었습니다. 의료진의 안내를 기다립니다.","reg"],
+["진료비 먼저 문의하기","예상 비용과 절차를 확인합니다.","💬",0,3,"진료비를 문의했습니다.","비용과 진료 절차를 확인한 뒤 접수를 이어갑니다.","ask"],
+["가족과 상의하기","가족에게 현재 상황을 알립니다.","📱",0,4,"가족과 상의하기로 했어요.","가족과 연락하는 동안 시간이 조금 더 지났습니다.","fam"]]},
+{loc:"헤브론의료원 · 진료실",speaker:"의료진",npc:"👨🏻‍⚕️",npcname:"의사",title:"의료진이 환자의 상태를 살펴봅니다.",subtitle:"필요한 검사와 치료에 대해 설명을 듣습니다.",choices:[
+["안내받은 검사 진행","설명에 따라 필요한 검사를 받습니다.","🩺",0,3,"검사를 진행합니다.","검사 결과를 바탕으로 치료 계획을 세웁니다.","test"],
+["치료 방법과 비용 상담","가능한 방법과 비용을 상의합니다.","💬",0,3,"치료 방법을 상담합니다.","환자 상황에 맞는 진료 계획을 함께 확인합니다.","talk"],
+["검사를 미루기","비용 부담으로 검사를 나중으로 미룹니다.","⏳",0,5,"검사를 미루기로 했습니다.","필요한 진료가 늦어질 수 있어 의료진과 다시 상의해야 합니다.","delay"]]},
+{loc:"헤브론의료원 · 치료 이후",speaker:"간호사",npc:"👩🏻‍⚕️",npcname:"간호사",title:"치료 이후에도 돌봄은 계속됩니다.",subtitle:"회복을 위해 이후 관리와 재방문 계획을 세웁니다.",choices:[
+["재방문 일정 확인하기","병원과 연결을 이어갑니다.","📅",0,2,"재방문 계획을 세웠습니다.","치료 이후에도 필요한 관리를 이어갈 수 있도록 합니다.","follow"],
+["가족과 함께 회복 관리","가족과 회복 과정을 살핍니다.","❤️",0,2,"가족과 함께 회복을 살핍니다.","가족의 돌봄과 의료진의 안내를 연결합니다.","home"],
+["거리와 비용 때문에 미루기","후속 진료를 나중으로 미룹니다.","🛣️",0,4,"재방문을 미루기로 했습니다.","거리와 비용은 치료 이후에도 부담으로 남을 수 있습니다.","skip"]]}];
+let idx=0,money=15,mins=0,care=0,locked=false;
+function hud(){$("money").textContent="🪙 "+money;$("clock").textContent="🕒 "+String(8+Math.floor(mins/60)).padStart(2,"0")+":"+String(mins%60).padStart(2,"0");$("steps").innerHTML=scenes.map((s,i)=>`<span class="step ${i<idx?'done':i===idx?'active':''}">${i+1}</span>`).join("")}
+function render(){locked=false;let s=scenes[idx];$("loc").textContent="📍 "+s.loc;$("speaker").textContent=s.speaker;$("npc").textContent=s.npc;$("npcname").textContent=s.npcname;$("title").textContent=s.title;$("subtitle").textContent=s.subtitle;$("hospital").classList.toggle("show",idx>=2);$("temple").style.display=idx>=2?"none":"block";$("house").textContent=idx>=2?"🏥":"🏡";$("notice").classList.remove("show");$("vehicle").className="vehicle";$("vehicle").textContent="";$("choices").innerHTML="";
+s.choices.forEach((c,i)=>{let b=document.createElement("button");b.className="choice";b.innerHTML=`<span class="ico">${c[2]}</span><span><strong>${c[0]}</strong><small>${c[1]}</small></span>`;b.onclick=()=>select(i);$("choices").appendChild(b)});hud()}
+function select(i){if(locked)return;locked=true;let c=scenes[idx].choices[i];money=Math.max(0,money-c[3]);mins+=c[4];if(idx>=2&&i===0)care+=2;else if(i===1)care++;
+[...$("choices").children].forEach((b,n)=>{b.disabled=true;b.style.opacity=n===i?"1":".45"});
+if(idx===0&&(c[7]==="motor"||c[7]==="bus")){$("vehicle").textContent=c[7]==="motor"?"🛵":"🚌";$("vehicle").classList.add("go")}
+$("char").style.animation="bob .5s infinite";$("noticeTitle").textContent=c[5];$("noticeText").textContent=c[6];$("next").textContent=idx===scenes.length-1?"여정의 결과 보기 →":"다음 장면으로 이동 →";$("notice").classList.add("show");hud()}
+$("next").onclick=()=>{if(!locked)return;if(idx<scenes.length-1){idx++;$("world").classList.add("fade");setTimeout(()=>{$("world").classList.remove("fade");render()},250)}else finish()};
+function finish(){let t,tx,q,e;if(care>=6){e="🌱";t="치료를 향한 여정을 이어갔습니다.";tx="먼 길을 이동하고 여러 선택을 거쳐 의료진을 만났습니다. 병원에 도착하는 것부터 치료 이후의 관리까지 환자에게는 많은 도움이 필요합니다.";q="가까운 곳에서 필요한 의료서비스를 받을 수 있다는 것. 누군가에게는 당연한 일이지만, 누군가에게는 간절한 바람입니다."}else if(care>=3){e="🧭";t="쉽지 않은 선택의 연속이었습니다.";tx="시간과 비용을 고려하며 선택해야 했습니다. 의료 접근성은 병원이 있는 것만으로 완성되지 않습니다.";q="아픈 사람이 치료를 포기하지 않도록, 의료가 필요한 곳에 닿아야 합니다."}else{e="🌧️";t="병원에 가는 길은 멀고 험했습니다.";tx="거리와 비용은 병원에 도착하기 전부터 치료 이후까지 큰 부담이 될 수 있습니다.";q="병원이 있다는 것과 누구나 병원에 갈 수 있다는 것은 다릅니다."}$("endEmoji").textContent=e;$("endTitle").textContent=t;$("endText").textContent=tx;$("endQuote").textContent=q;$("end").classList.add("show")}
+$("restart").onclick=()=>{$("end").classList.remove("show");idx=0;money=15;mins=0;care=0;render()};render();
+</script></section></main></body></html>
