@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>생명을 향한 여정 · 헤브론의료원 20주년</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
   <style>
     * {
       box-sizing: border-box;
@@ -381,6 +382,25 @@
     };
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
+    /* ---------- 게임 상태 변수 (시나리오보다 먼저 선언) ---------- */
+    let idx = 0, money = 15, mins = 0, hp = 5;
+    let F = {}, dn = [], mode = 'title', riding = false;
+    let px = 40, cam = 0, dir = 1, mv = 0;
+    let vx = 0, vk = '', vsp = 0;
+    let fa = 0, fdir = 1, T = 0;
+    let lastHint = '', tr = '', chT = 0, warn = '';
+    let cur = -1, q = [], qi = 0, choosing = 0, vis = [], after = null;
+    let ovFn = null, idleT = 0, bs = '', bt = '';
+    let pos = { d: 0, g: 0, c: 0, b: 0 };
+
+    const OFF = { d: 14, g: 28, c: 46, b: 58 };
+    const RT = { d: 0.1, g: 0.07, c: 0.06, b: 0.05 };
+    const K = { l: 0, r: 0 };
+
+    const vg = g.createLinearGradient(0, 0, 0, 50);
+    vg.addColorStop(0, 'rgba(10, 20, 10, 0.45)');
+    vg.addColorStop(1, 'rgba(10, 20, 10, 0)');
+
     /* ---------- 레트로 효과음 (Web Audio API) ---------- */
     let ac = null, muted = 0;
 
@@ -460,7 +480,7 @@
     const NO = label => [label, '시간이 없어요.', '⏭️', 0, 0, 0, '', '인사하고 돌아섭니다.'];
 
     /* ---------- 시나리오 데이터 ---------- */
-    /* 선택지 배열 구조: [제목, 설명, 아이콘, 비용(음수=획득), 시간(분), 다라상태, 플래그, 결과, 이동키, 필요플래그, 재선택여부] */
+    /* 선택지 배열 구조: [제목, 설명(문자열 또는 함수), 아이콘, 비용(음수=획득), 시간(분), 다라상태, 플래그, 결과, 이동키, 필요플래그, 재선택여부] */
     const S = [
       {
         loc: '캄보디아 농촌 마을 · 이른 새벽',
@@ -622,7 +642,7 @@
             ch: [
               ['약을 산다', '💰-3달러 · 당장 나아질까 싶지만… (❤️-1)', '💊', 3, 60, -1, 'clinic', '약을 먹였지만 다라의 가슴만 더 두근거립니다.'],
               ['단호히 거절하고 간다', '병원에서 정확한 진단을 받아요', '🚫', 0, 0, 0, '', '약장수를 지나쳐 병원으로 발걸음을 재촉합니다.'],
-              ['병원 방향만 묻는다', F.advice ? '메모 덕분에 바로 방향을 잡았어요 (🕒+15분)' : '길만 묻고 돌아섭니다 (🕒+45분)', '🗺️', 0, F.advice ? 15 : 45, 0, '', '병원 방향을 확인하고 다시 걷습니다.']
+              ['병원 방향만 묻는다', () => (F.advice ? '메모 덕분에 바로 방향을 잡았어요 (🕒+15분)' : '길만 묻고 돌아섭니다 (🕒+45분)'), '🗺️', 0, () => (F.advice ? 15 : 45), 0, '', '병원 방향을 확인하고 다시 걷습니다.']
             ]
           }
         ]
@@ -753,25 +773,6 @@
         ]
       }
     ];
-
-    /* ---------- 게임 상태 변수 ---------- */
-    let idx = 0, money = 15, mins = 0, hp = 5;
-    let F = {}, dn = [], mode = 'title', riding = false;
-    let px = 40, cam = 0, dir = 1, mv = 0;
-    let vx = 0, vk = '', vsp = 0;
-    let fa = 0, fdir = 1, T = 0;
-    let lastHint = '', tr = '', chT = 0, warn = '';
-    let cur = -1, q = [], qi = 0, choosing = 0, vis = [], after = null;
-    let ovFn = null, idleT = 0, bs = '', bt = '';
-    let pos = { d: 0, g: 0, c: 0, b: 0 };
-
-    const OFF = { d: 14, g: 28, c: 46, b: 58 };
-    const RT = { d: 0.1, g: 0.07, c: 0.06, b: 0.05 };
-    const K = { l: 0, r: 0 };
-
-    const vg = g.createLinearGradient(0, 0, 0, 50);
-    vg.addColorStop(0, 'rgba(10, 20, 10, 0.45)');
-    vg.addColorStop(1, 'rgba(10, 20, 10, 0)');
 
     /* ---------- 스프라이트 그리기 ---------- */
     function person(x, y, c, d, m) {
@@ -949,8 +950,8 @@
     function skyColors(th) {
       const hr = 6 + Math.floor(mins / 60);
       if (idx <= 5) {
-        if (hr >= 18) return ['#2c3e50', '#e67e22']; // 저녁 노을/밤
-        if (hr >= 16) return ['#7fb3d5', '#f5b041']; // 늦은 오후
+        if (hr >= 18) return ['#2c3e50', '#e67e22'];
+        if (hr >= 16) return ['#7fb3d5', '#f5b041'];
       }
       return th.sky;
     }
@@ -1046,7 +1047,7 @@
       S[idx].n.forEach((n, i) => {
         if (n.q && !F[n.q]) return;
         if (n.j && dn[i] && F.family) return;
-        if (idx === 7 && i === 0) return; // 회복실 다라는 침대 위에 별도 렌더링
+        if (idx === 7 && i === 0) return;
         person(n.x - o, FY, n.c, px < n.x ? -1 : 1, 0);
         if (!dn[i] && mode !== 'fade') {
           R(n.x - o - 1, FY - 36 + bob, 2, 5, '#ffe58a');
@@ -1054,7 +1055,6 @@
         }
       });
 
-      // 8장 회복실: 침대 위 다라
       if (idx === 7) {
         R(362 - o, FY - 21, 8, 6, SK);
         R(362 - o, FY - 23, 8, 3, '#2a1f2d');
@@ -1115,6 +1115,7 @@
     /* ---------- 게임 로직 및 UI 업데이트 ---------- */
     const ok = n => !n.q || F[n.q];
     const open = () => S[idx].n.every((n, i) => !n.m || dn[i]);
+    const val = v => (typeof v === 'function' ? v() : v);
 
     function hint(t) {
       if (t !== lastHint) {
@@ -1223,7 +1224,7 @@
     function talk(i) {
       const n = S[idx].n[i];
       cur = i;
-      q = (typeof n.d === 'function' ? n.d() : n.d).slice();
+      q = val(n.d).slice();
       qi = 0;
       mode = 'talk';
       after = () => (n.ch ? choices() : endTalk());
@@ -1251,8 +1252,10 @@
       const n = S[idx].n[cur];
       vis = n.ch.filter(c => (!c[9] || F[c[9]]) && !(c[10] && F[c[6]]));
       $('ch').innerHTML = vis.map((c, i) => {
-        const afford = c[3] <= 0 || money >= c[3];
-        const sub = afford ? c[1] : c[1] + ' (잔액 부족: 💰' + money + '달러)';
+        const cost = val(c[3]);
+        const desc = val(c[1]);
+        const afford = cost <= 0 || money >= cost;
+        const sub = afford ? desc : desc + ' (잔액 부족: 💰' + money + '달러)';
         return (
           '<button class="c" data-i="' + i + '" ' + (afford ? '' : 'disabled') + '>' +
           '<span class="i">' + c[2] + '</span>' +
@@ -1268,7 +1271,9 @@
     function pick(i) {
       const c = vis[i];
       if (!choosing || !c) return;
-      if (c[3] > 0 && money < c[3]) {
+      const cost = val(c[3]);
+      const addMins = val(c[4]);
+      if (cost > 0 && money < cost) {
         sfx('warn');
         return;
       }
@@ -1277,9 +1282,9 @@
       sfx('pick');
       const n = S[idx].n[cur];
 
-      money = Math.max(0, money - c[3]);
-      mins += c[4];
-      chT += c[4];
+      money = Math.max(0, money - cost);
+      mins += addMins;
+      chT += addMins;
       hp = clamp(hp + c[5], 0, 5);
 
       if (c[6]) F[c[6]] = 1;
