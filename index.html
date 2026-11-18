@@ -68,7 +68,6 @@
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
     }
-    /* 상단 HUD 겹침 방지를 위한 유연한 레이아웃 */
     #topBar {
       position: absolute;
       left: clamp(10px, 1.5vw, 22px);
@@ -419,7 +418,7 @@
     let lastHint = '', tr = '', chT = 0, warn = '';
     let cur = -1, q = [], qi = 0, choosing = 0, vis = [], after = null;
     let ovFn = null, idleT = 0, bs = '', bt = '', lastClock = '';
-    let cutScene = ''; // 대사 멘트에 따른 실시간 장면 전환 상태
+    let cutScene = '', surgeryX = 420; // 수술실 문과 의자의 고정 월드 좌표
     let pos = { d: 0, g: 0, c: 0, b: 0 };
 
     const OFF = { d: 14, g: 28, c: 46, b: 58 };
@@ -563,7 +562,7 @@
             n: '할머니',
             c: GR,
             d: [
-              '할머니|이거, 내가 장날 쓰려고 몰래 남겨 둔 거야. 꼭 데려가거라.',
+              '할머니|이거, 내가 장날 쓰려고 남겨 둔 거야. 꼭 데려가거라.',
               '마야|할머니… 꼭 낫게 해서 돌아올게요.'
             ],
             ch: [
@@ -712,8 +711,8 @@
             m: 1,
             d: () => [
               Math.floor(mins + playMins) >= 660
-                ? '나레이션|어스름한 저녁 빛 아래, 벽에 "20"이라는 숫자가 걸린 큰 건물이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.'
-                : '나레이션|햇살 아래, 벽에 "20"이라는 숫자가 걸린 큰 건물이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.',
+                ? '나레이션|어스름한 저녁 빛 아래, 헤브론의료원이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.'
+                : '나레이션|햇살 아래, 헤브론의료원이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.',
               '리타|어서 오세요. 아이가 숨을 많이 가빠하네요. 어떤 일로 오셨어요?',
               '마야|동생 다라가 심장이 아파서요… 그런데 저희는 수술할 돈이 없어요.'
             ].concat(
@@ -844,7 +843,6 @@
       R(x + 1, y - 8, 3, 5, ME.l);
       R(x - 4, y - 16, 9, 9, ME.t);
       R(x - 4, y - 11, 9, 4, ME.b);
-      // 두 손을 가슴 앞에 모은 포즈
       R(x - 2, y - 14, 5, 3, SK);
       R(x - 4, y - 23, 9, 7, SK);
       R(x - 5, y - 25, 11, 4, ME.h);
@@ -971,7 +969,7 @@
       R(x + 3, 45, 16, 4, '#fff');
     }
 
-    // 수술실 앞 복도 소품 (수술실 문 + 붉은 수술중 표시등 + 대기 벤치)
+    // 수술실 앞 복도 소품 (고정된 월드 좌표 x에 배치)
     function surgeryHall(x) {
       // 수술실 이중문
       R(x + 48, GY - 54, 48, 56, '#7ba396');
@@ -982,12 +980,12 @@
       R(x + 68, GY - 24, 2, 6, '#4a6b60');
       R(x + 74, GY - 24, 2, 6, '#4a6b60');
 
-      // 문 위 붉은색 '수술중' 표시등 (은은하게 점멸)
+      // 문 위 붉은색 '수술중' 표시등
       const blink = ((T >> 5) & 1) ? '#e74c3c' : '#c0392b';
       R(x + 56, GY - 67, 32, 9, '#2c2c2c');
       R(x + 58, GY - 65, 28, 5, blink);
 
-      // 복도 대기 의자 (벤치)
+      // 복도 대기 의자 (벤치) - 고정 위치
       R(x - 16, FY - 7, 34, 3, '#8a6a43');
       R(x - 14, FY - 4, 2, 6, '#6b4a2f');
       R(x + 14, FY - 4, 2, 6, '#6b4a2f');
@@ -1022,7 +1020,8 @@
         hosp(480 - o);
         palm(780 - o);
       } else if (p === 's') {
-        surgeryHall(px - o);
+        // 수술실 문과 의자를 고정 좌표(surgeryX)에 그림
+        surgeryHall(surgeryX - o);
       } else if (p === 'c') {
         cab(150 - o);
         cab(210 - o);
@@ -1103,7 +1102,6 @@
       R(0, GY + 14, VW, 1, '#0002');
       R(0, GY + 28, VW, 1, '#0002');
 
-      // 수술실 복도 컷씬에서는 창문 대신 복도 벽면만 깔끔하게 렌더링
       if (cutScene === 'surgery') return;
 
       for (let k = 0; k < 5; k++) {
@@ -1144,8 +1142,12 @@
       const bob = Math.round(Math.sin(T / 12) * 2);
 
       if (cutScene === 'surgery') {
-        // 수술실 앞 복도 벤치에 앉아 두 손을 모으고 기다리는 마야
-        sittingMaya(px - o, FY);
+        // 대사 중에는 의자에 앉아 있고, 대사가 끝나면(mode === 'walk') 일어나서 이동 가능
+        if (mode === 'talk') {
+          sittingMaya(surgeryX - o, FY);
+        } else {
+          person(px - o, FY, ME, dir, mv);
+        }
       } else if (cutScene === 'epilogue_village') {
         person(px + 42 - o, FY, SO, -1, 0);
         kid(px + 20 - o, FY, DA, 1, 0);
@@ -1248,7 +1250,7 @@
 
     function spp(nm) {
       if (cutScene === 'surgery') {
-        if (nm === 'MAYA' || nm === '마야') return [px, 26];
+        if (nm === 'MAYA' || nm === '마야') return [mode === 'talk' ? surgeryX : px, 26];
         return null;
       }
       if (cutScene === 'epilogue_village') {
@@ -1360,9 +1362,9 @@
       bs = p[0];
       bt = p.slice(1).join('|');
 
-      // 대사 멘트 내용에 따라 화면 배경/상황 즉시 전환
       if (bt.includes('수술실 불이 켜지고')) {
         cutScene = 'surgery';
+        surgeryX = px; // 수술실 문과 의자 위치를 현재 좌표에 고정
         $('loc').textContent = '📍 헤브론의료원 · 수술실 앞 복도';
         $('sp').textContent = '수술 대기';
         $('tt').textContent = '수술이 무사히 끝나기를 간절히 기다립니다.';
