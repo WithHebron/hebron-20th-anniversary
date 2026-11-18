@@ -68,38 +68,46 @@
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
     }
-    #hud {
+    /* 상단 HUD 겹침 방지를 위한 유연한 레이아웃 */
+    #topBar {
       position: absolute;
       left: clamp(10px, 1.5vw, 22px);
-      top: clamp(10px, 1.5vh, 20px);
-      display: flex;
-      gap: clamp(6px, 0.8vw, 12px);
-      align-items: center;
-      flex-wrap: wrap;
-      line-height: 1;
-      font-size: clamp(16px, 1.9vw, 26px);
-      font-weight: 700;
-      z-index: 3;
-    }
-    .ib, #loc, #snd {
-      background: #173d35e0;
-      border: 2px solid #4f8f78;
-      padding: clamp(5px, 0.7vh, 10px) clamp(10px, 1.1vw, 16px);
-      color: #f4efe0;
-      border-radius: 4px;
-    }
-    #topR {
-      position: absolute;
       right: clamp(10px, 1.5vw, 22px);
       top: clamp(10px, 1.5vh, 20px);
       display: flex;
-      gap: clamp(6px, 0.8vw, 12px);
-      align-items: center;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      flex-wrap: wrap;
       z-index: 3;
+      pointer-events: none;
+    }
+    #hud {
+      display: flex;
+      gap: clamp(5px, 0.8vw, 12px);
+      align-items: center;
+      flex-wrap: wrap;
+      line-height: 1;
+      font-size: clamp(15px, 1.8vw, 26px);
+      font-weight: 700;
+    }
+    #topR {
+      display: flex;
+      gap: clamp(5px, 0.8vw, 12px);
+      align-items: center;
+      margin-left: auto;
+    }
+    .ib, #loc, #snd, #co {
+      pointer-events: auto;
+      background: #173d35e6;
+      border: 2px solid #4f8f78;
+      padding: clamp(5px, 0.65vh, 10px) clamp(9px, 1vw, 15px);
+      color: #f4efe0;
+      border-radius: 4px;
     }
     #loc {
-      line-height: 1;
-      font-size: clamp(15px, 1.7vw, 24px);
+      line-height: 1.1;
+      font-size: clamp(14px, 1.6vw, 24px);
       font-weight: 700;
     }
     #snd {
@@ -110,9 +118,9 @@
     }
     .st {
       display: inline-block;
-      width: clamp(8px, 0.9vw, 13px);
-      height: clamp(8px, 0.9vw, 13px);
-      margin-right: 4px;
+      width: clamp(7px, 0.85vw, 13px);
+      height: clamp(7px, 0.85vw, 13px);
+      margin-right: 3px;
       background: #3b5a4c;
     }
     .st.a { background: #f1d18e; }
@@ -126,14 +134,14 @@
     }
     #bub {
       transform: translate(-50%, -100%);
-      max-width: min(56%, 540px);
+      max-width: min(60%, 540px);
       min-width: 140px;
       background: #fff9e9;
       color: #3a3220;
       border: 3px solid #e5c88d;
       border-radius: 16px;
       padding: clamp(9px, 1.2vh, 16px) clamp(14px, 1.6vw, 22px);
-      font-size: clamp(19px, 2.2vw, 30px);
+      font-size: clamp(18px, 2.2vw, 30px);
       font-weight: 700;
       box-shadow: 0 4px 14px #0007;
     }
@@ -151,37 +159,29 @@
     }
     #bub b {
       display: block;
-      font-size: clamp(15px, 1.6vw, 22px);
+      font-size: clamp(14px, 1.6vw, 22px);
       letter-spacing: 0.04em;
       color: #8a754c;
       margin-bottom: 2px;
     }
     #cap {
       left: 50%;
-      top: clamp(78px, 13vh, 130px);
+      top: clamp(94px, 16vh, 145px);
       transform: translateX(-50%);
-      max-width: 86%;
+      max-width: 88%;
       text-align: center;
-      background: #173d35f0;
+      background: #173d35f2;
       border: 2px solid #4f8f78;
       padding: clamp(10px, 1.4vh, 18px) clamp(18px, 2.2vw, 30px);
-      font-size: clamp(19px, 2.2vw, 30px);
+      font-size: clamp(18px, 2.2vw, 30px);
       font-weight: 700;
       color: #fff;
       border-radius: 8px;
     }
     #co {
-      position: absolute;
-      left: clamp(10px, 1.5vw, 22px);
-      top: clamp(48px, 6.8vh, 72px);
       line-height: 1;
-      font-size: clamp(15px, 1.6vw, 22px);
+      font-size: clamp(14px, 1.5vw, 22px);
       font-weight: 700;
-      background: #173d35e0;
-      border: 2px solid #4f8f78;
-      padding: clamp(5px, 0.6vh, 9px) clamp(10px, 1.1vw, 15px);
-      border-radius: 4px;
-      z-index: 3;
     }
     #pad {
       position: absolute;
@@ -349,19 +349,21 @@
   <main id="game">
     <div id="stage">
       <canvas id="cv" width="320" height="160"></canvas>
-      <div id="hud">
-        <span class="ib">🪙 <b id="m">15</b></span>
-        <span class="ib">❤️ <b id="h">5</b></span>
-        <span class="ib">🕒 <b id="c">00:00</b></span>
-        <span id="steps"></span>
-      </div>
-      <div id="topR">
-        <div id="loc"></div>
-        <button id="snd" title="효과음 켜기/끄기">🔊</button>
+      <div id="topBar">
+        <div id="hud">
+          <span class="ib">🪙 <b id="m">15</b></span>
+          <span class="ib">❤️ <b id="h">5</b></span>
+          <span class="ib">🕒 <b id="c">00:00</b></span>
+          <span id="steps"></span>
+          <span id="co"></span>
+        </div>
+        <div id="topR">
+          <div id="loc"></div>
+          <button id="snd" title="효과음 켜기/끄기">🔊</button>
+        </div>
       </div>
       <div id="bub"></div>
       <div id="cap"></div>
-      <div id="co"></div>
       <div id="pad">
         <div>
           <button id="L">◀</button>
@@ -483,7 +485,7 @@
 
     /* ---------- 캐릭터 색상 및 테마 정의 ---------- */
     const ME = { h: '#2a1f2d', t: '#cfe8f3', b: '#4a5675', l: '#e0b898' };
-    const NURSE_MAYA = { h: '#2a1f2d', t: '#ffffff', b: '#2f8c82', l: '#e0b898' }; // 1년 뒤 간호 실습복 마야
+    const NURSE_MAYA = { h: '#2a1f2d', t: '#ffffff', b: '#2f8c82', l: '#e0b898' };
     const TH = [
       { sky: ['#bfe6a6', '#eef2c0'], far: '#a6c98e', ft: '#8fb57c', mid: '#6a9f5c', tr: '#3f6b3d', gr: '#6aa543', dt: '#a98458' },
       { sky: ['#aee0e8', '#f3f0c8'], far: '#9cc79a', ft: '#86b386', mid: '#5f9a64', tr: '#3d6a46', gr: '#78ad4a', dt: '#c4a06a' },
@@ -561,7 +563,7 @@
             n: '할머니',
             c: GR,
             d: [
-              '할머니|이거, 내가 장날 쓰려고 남겨 둔 거야. 꼭 데려가거라.',
+              '할머니|이거, 내가 장날 쓰려고 몰래 남겨 둔 거야. 꼭 데려가거라.',
               '마야|할머니… 꼭 낫게 해서 돌아올게요.'
             ],
             ch: [
@@ -710,8 +712,8 @@
             m: 1,
             d: () => [
               Math.floor(mins + playMins) >= 660
-                ? '나레이션|어스름한 저녁 빛 아래, 헤브론의료원이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.'
-                : '나레이션|햇살 아래, 헤브론의료원이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.',
+                ? '나레이션|어스름한 저녁 빛 아래, 벽에 "20"이라는 숫자가 걸린 큰 건물이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.'
+                : '나레이션|햇살 아래, 벽에 "20"이라는 숫자가 걸린 큰 건물이 보입니다. 콩은 병원 문밖에서 얌전히 기다립니다.',
               '리타|어서 오세요. 아이가 숨을 많이 가빠하네요. 어떤 일로 오셨어요?',
               '마야|동생 다라가 심장이 아파서요… 그런데 저희는 수술할 돈이 없어요.'
             ].concat(
@@ -834,6 +836,22 @@
       R(x + (d > 0 ? 2 : -2), y - 19, 1, 2, '#222');
     }
 
+    // 복도 의자에 앉아 두 손을 모으고 기도하는 마야
+    function sittingMaya(x, y) {
+      x = Math.round(x);
+      y = Math.round(y);
+      R(x - 4, y - 8, 3, 5, ME.l);
+      R(x + 1, y - 8, 3, 5, ME.l);
+      R(x - 4, y - 16, 9, 9, ME.t);
+      R(x - 4, y - 11, 9, 4, ME.b);
+      // 두 손을 가슴 앞에 모은 포즈
+      R(x - 2, y - 14, 5, 3, SK);
+      R(x - 4, y - 23, 9, 7, SK);
+      R(x - 5, y - 25, 11, 4, ME.h);
+      R(x - 5, y - 23, 3, 8, ME.h);
+      R(x + 2, y - 20, 1, 1, '#222');
+    }
+
     function kid(x, y, c, d, m) {
       x = Math.round(x);
       y = Math.round(y);
@@ -953,6 +971,31 @@
       R(x + 3, 45, 16, 4, '#fff');
     }
 
+    // 수술실 앞 복도 소품 (수술실 문 + 붉은 수술중 표시등 + 대기 벤치)
+    function surgeryHall(x) {
+      // 수술실 이중문
+      R(x + 48, GY - 54, 48, 56, '#7ba396');
+      R(x + 51, GY - 51, 20, 53, '#97bfb2');
+      R(x + 73, GY - 51, 20, 53, '#97bfb2');
+      R(x + 55, GY - 43, 12, 16, '#bce0e6');
+      R(x + 77, GY - 43, 12, 16, '#bce0e6');
+      R(x + 68, GY - 24, 2, 6, '#4a6b60');
+      R(x + 74, GY - 24, 2, 6, '#4a6b60');
+
+      // 문 위 붉은색 '수술중' 표시등 (은은하게 점멸)
+      const blink = ((T >> 5) & 1) ? '#e74c3c' : '#c0392b';
+      R(x + 56, GY - 67, 32, 9, '#2c2c2c');
+      R(x + 58, GY - 65, 28, 5, blink);
+
+      // 복도 대기 의자 (벤치)
+      R(x - 16, FY - 7, 34, 3, '#8a6a43');
+      R(x - 14, FY - 4, 2, 6, '#6b4a2f');
+      R(x + 14, FY - 4, 2, 6, '#6b4a2f');
+      R(x - 16, FY - 14, 34, 2, '#8a6a43');
+      R(x - 14, FY - 12, 2, 5, '#6b4a2f');
+      R(x + 14, FY - 12, 2, 5, '#6b4a2f');
+    }
+
     function bed(x) {
       R(x, FY - 14, 60, 4, '#e7ecee');
       R(x, FY - 10, 60, 8, '#6aa6a0');
@@ -978,6 +1021,8 @@
         palm(380 - o);
         hosp(480 - o);
         palm(780 - o);
+      } else if (p === 's') {
+        surgeryHall(px - o);
       } else if (p === 'c') {
         cab(150 - o);
         cab(210 - o);
@@ -1058,6 +1103,9 @@
       R(0, GY + 14, VW, 1, '#0002');
       R(0, GY + 28, VW, 1, '#0002');
 
+      // 수술실 복도 컷씬에서는 창문 대신 복도 벽면만 깔끔하게 렌더링
+      if (cutScene === 'surgery') return;
+
       for (let k = 0; k < 5; k++) {
         const x = 90 + k * 210 - cam;
         if (x < -80 || x > VW) continue;
@@ -1078,9 +1126,15 @@
     /* ---------- 메인 렌더 루프 ---------- */
     function render() {
       const s = S[idx];
-      // 대사 멘트에 따른 배경 테마 및 소품 전환
-      const activeTh = cutScene === 'epilogue_village' ? 0 : cutScene === 'epilogue_hosp' ? 2 : s.th;
-      const activeProp = cutScene === 'epilogue_village' ? 'v' : cutScene === 'epilogue_hosp' ? 'h' : s.p;
+      const activeTh =
+        cutScene === 'epilogue_village' ? 0 :
+        cutScene === 'epilogue_hosp' ? 2 :
+        cutScene === 'surgery' ? 3 : s.th;
+      const activeProp =
+        cutScene === 'epilogue_village' ? 'v' :
+        cutScene === 'epilogue_hosp' ? 'h' :
+        cutScene === 'surgery' ? 's' : s.p;
+
       const th = TH[activeTh];
       const o = cam;
 
@@ -1089,15 +1143,17 @@
 
       const bob = Math.round(Math.sin(T / 12) * 2);
 
-      // 에필로그 컷씬 전용 연출
-      if (cutScene === 'epilogue_village') {
-        person(px + 42 - o, FY, SO, -1, 0); // 소페아 아주머니
-        kid(px + 20 - o, FY, DA, 1, 0);     // 건강해진 다라
-        dog(px - 18 - o, FY, 1, 0);         // 강아지 콩
-        person(px - o, FY, ME, 1, 0);       // 마야
+      if (cutScene === 'surgery') {
+        // 수술실 앞 복도 벤치에 앉아 두 손을 모으고 기다리는 마야
+        sittingMaya(px - o, FY);
+      } else if (cutScene === 'epilogue_village') {
+        person(px + 42 - o, FY, SO, -1, 0);
+        kid(px + 20 - o, FY, DA, 1, 0);
+        dog(px - 18 - o, FY, 1, 0);
+        person(px - o, FY, ME, 1, 0);
       } else if (cutScene === 'epilogue_hosp') {
-        dog(px - 22 - o, FY, 1, 0);         // 강아지 콩
-        person(px - o, FY, NURSE_MAYA, 1, 0); // 간호 실습복 입은 마야
+        dog(px - 22 - o, FY, 1, 0);
+        person(px - o, FY, NURSE_MAYA, 1, 0);
       } else {
         S[idx].n.forEach((n, i) => {
           if (n.q && !F[n.q]) return;
@@ -1110,7 +1166,6 @@
           }
         });
 
-        // 회복실 다라 연출: 침대에 누워 있다가 대화를 마친 뒤 침대 옆에 건강하게 서 있음
         if (idx === 7) {
           if (!dn[0]) {
             R(362 - o, FY - 21, 8, 6, SK);
@@ -1144,12 +1199,6 @@
             R(n.x - 18 - o, FY - 9, 36, 10, '#a67c52');
           }
         });
-
-        // 수술실 대기 연출 (붉은 수술중 표시등)
-        if (cutScene === 'surgery') {
-          R(330 - o, 36, 22, 22, '#c0392b');
-          R(334 - o, 45, 14, 4, '#ffe58a');
-        }
       }
 
       if (mode !== 'fade' && mode !== 'title' && !riding && open()) {
@@ -1192,12 +1241,16 @@
     }
 
     const has = k => {
-      if (k === 'd') return idx <= 6 && cutScene !== 'surgery'; // 진료실(6)까지 다라 동행 (수술실 입실 시 제외)
-      if (k === 'g') return idx <= 4; // 1단계(마을)부터 5단계(갈림길)까지 콩 동행
+      if (k === 'd') return idx <= 6 && cutScene !== 'surgery';
+      if (k === 'g') return idx <= 4;
       return !!F.family && (idx === 3 || idx === 4);
     };
 
     function spp(nm) {
+      if (cutScene === 'surgery') {
+        if (nm === 'MAYA' || nm === '마야') return [px, 26];
+        return null;
+      }
       if (cutScene === 'epilogue_village') {
         if (nm === 'MAYA' || nm === '마야') return [px, 28];
         if (nm === '소페아') return [px + 42, 28];
@@ -1311,14 +1364,23 @@
       if (bt.includes('수술실 불이 켜지고')) {
         cutScene = 'surgery';
         $('loc').textContent = '📍 헤브론의료원 · 수술실 앞 복도';
+        $('sp').textContent = '수술 대기';
+        $('tt').textContent = '수술이 무사히 끝나기를 간절히 기다립니다.';
+        $('st2').textContent = '의료진의 손길에 다라의 생명을 맡겼습니다.';
         hud();
       } else if (bt.includes('며칠 뒤, 마을로 돌아온 날')) {
         cutScene = 'epilogue_village';
         $('loc').textContent = '📍 며칠 뒤 · 고향 마을';
+        $('sp').textContent = '에필로그';
+        $('tt').textContent = '건강을 되찾은 다라와 함께 고향으로 돌아왔습니다.';
+        $('st2').textContent = '마을 보건소와 병원이 함께 아이의 회복을 지켜봅니다.';
         hud();
       } else if (bt.includes('그리고 1년 뒤')) {
         cutScene = 'epilogue_hosp';
         $('loc').textContent = '📍 1년 뒤 · 헤브론의료원 앞마당';
+        $('sp').textContent = '에필로그 · 다음 20년';
+        $('tt').textContent = '받았던 사랑을 나누는 간호학생이 된 마야.';
+        $('st2').textContent = '생명을 살리는 길은 또 다른 희망으로 이어집니다.';
         hud();
       }
 
