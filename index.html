@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>생명을 향한 여정 · 헤브론의료원 20주년</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +16,7 @@
       margin: 0;
       background: #0f1a14;
       color: #f4efe0;
-      font-family: system-ui, "Noto Sans KR", sans-serif;
+      font-family: "Gaegu", "Noto Sans KR", system-ui, -apple-system, sans-serif;
     }
     body {
       display: flex;
@@ -62,14 +65,14 @@
       align-items: center;
       flex-wrap: wrap;
       line-height: 1;
-      font-size: 12px;
-      font-weight: 800;
+      font-size: 14px;
+      font-weight: 700;
       z-index: 3;
     }
     .ib, #loc, #snd {
       background: #173d35d9;
       border: 2px solid #4f8f78;
-      padding: 4px 7px;
+      padding: 4px 8px;
       color: #f4efe0;
     }
     #topR {
@@ -83,13 +86,13 @@
     }
     #loc {
       line-height: 1;
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 13px;
+      font-weight: 700;
     }
     #snd {
       cursor: pointer;
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 13px;
+      font-weight: 700;
       line-height: 1;
     }
     .st {
@@ -104,20 +107,21 @@
     #bub, #cap {
       position: absolute;
       display: none;
-      line-height: 1.45;
+      line-height: 1.35;
       z-index: 5;
       pointer-events: none;
     }
     #bub {
       transform: translate(-50%, -100%);
-      max-width: 48%;
-      min-width: 100px;
+      max-width: 52%;
+      min-width: 110px;
       background: #fff9e9;
       color: #3a3220;
       border: 2px solid #e5c88d;
-      border-radius: 12px;
-      padding: 6px 10px;
-      font-size: 13px;
+      border-radius: 14px;
+      padding: 7px 11px;
+      font-size: 16px;
+      font-weight: 700;
       box-shadow: 0 3px 10px #0006;
     }
     #bub:after {
@@ -134,8 +138,8 @@
     }
     #bub b {
       display: block;
-      font-size: 10px;
-      letter-spacing: 0.08em;
+      font-size: 13px;
+      letter-spacing: 0.04em;
       color: #8a754c;
     }
     #cap {
@@ -147,20 +151,21 @@
       background: #173d35eb;
       border: 2px solid #4f8f78;
       padding: 8px 14px;
-      font-size: 13px;
+      font-size: 16px;
+      font-weight: 700;
       color: #fff;
-      border-radius: 4px;
+      border-radius: 6px;
     }
     #co {
       position: absolute;
       left: 6px;
-      top: 33px;
+      top: 35px;
       line-height: 1;
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 700;
       background: #173d35d9;
       border: 2px solid #4f8f78;
-      padding: 4px 7px;
+      padding: 4px 8px;
       z-index: 3;
     }
     #pad {
@@ -193,33 +198,34 @@
       #pad { display: none; }
     }
     #box {
-      min-height: 178px;
-      padding: 11px 13px;
+      min-height: 185px;
+      padding: 12px 14px;
       background: #1b2c22;
       border: 3px solid #6f8f5f;
       border-top: 0;
-      line-height: 1.45;
+      line-height: 1.4;
     }
     #sp {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 700;
       color: #e5c88d;
     }
     #tt {
       margin: 2px 0;
-      font-size: 17px;
+      font-size: 21px;
+      font-weight: 700;
     }
     #st2 {
       margin: 0;
-      font-size: 12px;
+      font-size: 15px;
       color: #cfdccf;
     }
     #ch {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 8px;
-      margin-top: 9px;
+      margin-top: 10px;
     }
     .c {
       display: flex;
@@ -227,7 +233,7 @@
       align-items: center;
       text-align: left;
       font: inherit;
-      padding: 8px 10px;
+      padding: 8px 11px;
       cursor: pointer;
       color: #49351e;
       border: 2px solid #a87a42;
@@ -255,11 +261,11 @@
       filter: grayscale(0.6);
     }
     .c .i { font-size: 22px; }
-    .c b { display: block; font-size: 13px; }
-    .c small { font-size: 11px; color: #5a4b38; }
+    .c b { display: block; font-size: 16px; font-weight: 700; }
+    .c small { font-size: 14px; color: #5a4b38; }
     #hint {
-      margin-top: 9px;
-      font-size: 12px;
+      margin-top: 10px;
+      font-size: 15px;
       font-weight: 700;
       color: #f1d18e;
     }
@@ -278,13 +284,13 @@
       display: grid;
     }
     #end .e { font-size: 48px; }
-    #end h2 { font-size: 24px; margin: 6px 0; }
+    #end h2 { font-size: 28px; margin: 6px 0; font-weight: 700; }
     #end p {
-      line-height: 1.65;
+      line-height: 1.55;
       color: #e1eee5;
       max-width: 560px;
       margin: 8px auto;
-      font-size: 14px;
+      font-size: 17px;
     }
     #end blockquote {
       margin: 12px auto;
@@ -292,8 +298,8 @@
       padding: 14px;
       background: #ffffff18;
       border-left: 4px solid #f1d18e;
-      font-weight: 800;
-      font-size: 14px;
+      font-weight: 700;
+      font-size: 17px;
     }
     #stats {
       display: none;
@@ -302,19 +308,19 @@
       padding: 10px;
       background: #0e241e;
       border: 1px solid #4f8f78;
-      font-size: 12px;
+      font-size: 15px;
       color: #cfdccf;
-      line-height: 1.6;
+      line-height: 1.5;
     }
     #end button {
       border: 0;
-      padding: 12px 24px;
+      padding: 11px 24px;
       background: #f1d18e;
       color: #1b2c22;
-      font-weight: 900;
+      font-weight: 700;
       cursor: pointer;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 18px;
       margin-top: 6px;
     }
   </style>
@@ -1130,7 +1136,7 @@
     };
 
     function spp(nm) {
-      if (nm === '마야') return [riding ? vx : px, 28];
+      if (nm === 'MAYA' || nm === '마야') return [riding ? vx : px, 28];
       if (nm === '다라') return idx === 7 ? [366, 24] : has('d') ? [pos.d, 20] : null;
       if (nm === '찬타' && has('c')) return [pos.c, 28];
       const L = S[idx].n;
