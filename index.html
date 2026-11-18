@@ -417,6 +417,7 @@
     let lastHint = '', tr = '', chT = 0, warn = '';
     let cur = -1, q = [], qi = 0, choosing = 0, vis = [], after = null;
     let ovFn = null, idleT = 0, bs = '', bt = '', lastClock = '';
+    let cutScene = ''; // 대사 멘트에 따른 실시간 장면 전환 상태
     let pos = { d: 0, g: 0, c: 0, b: 0 };
 
     const OFF = { d: 14, g: 28, c: 46, b: 58 };
@@ -482,6 +483,7 @@
 
     /* ---------- 캐릭터 색상 및 테마 정의 ---------- */
     const ME = { h: '#2a1f2d', t: '#cfe8f3', b: '#4a5675', l: '#e0b898' };
+    const NURSE_MAYA = { h: '#2a1f2d', t: '#ffffff', b: '#2f8c82', l: '#e0b898' }; // 1년 뒤 간호 실습복 마야
     const TH = [
       { sky: ['#bfe6a6', '#eef2c0'], far: '#a6c98e', ft: '#8fb57c', mid: '#6a9f5c', tr: '#3f6b3d', gr: '#6aa543', dt: '#a98458' },
       { sky: ['#aee0e8', '#f3f0c8'], far: '#9cc79a', ft: '#86b386', mid: '#5f9a64', tr: '#3d6a46', gr: '#78ad4a', dt: '#c4a06a' },
@@ -505,7 +507,7 @@
 
     const NO = label => [label, '시간이 없어요.', '⏭️', 0, 0, 0, '', '인사하고 돌아섭니다.'];
 
-    /* ---------- 시나리오 데이터 (개연성 및 설정 보완 반영) ---------- */
+    /* ---------- 시나리오 데이터 ---------- */
     const S = [
       {
         loc: '캄보디아 농촌 마을 · 이른 새벽',
@@ -959,9 +961,8 @@
       R(x + 3, FY - 18, 14, 5, '#fff');
     }
 
-    function props() {
+    function props(p) {
       const o = cam;
-      const p = S[idx].p;
       if (p === 'v') {
         hut(120 - o);
         palm(470 - o);
@@ -990,7 +991,7 @@
     /* ---------- 배경 렌더링 (경과 시간에 따른 하늘 변화) ---------- */
     function skyColors(th) {
       const totalMins = Math.floor(mins + playMins);
-      if (idx <= 5) {
+      if (idx <= 5 && !cutScene) {
         if (totalMins >= 720) return ['#2c3e50', '#e67e22'];
         if (totalMins >= 600) return ['#7fb3d5', '#f5b041'];
       }
@@ -1077,54 +1078,79 @@
     /* ---------- 메인 렌더 루프 ---------- */
     function render() {
       const s = S[idx];
-      const th = TH[s.th];
+      // 대사 멘트에 따른 배경 테마 및 소품 전환
+      const activeTh = cutScene === 'epilogue_village' ? 0 : cutScene === 'epilogue_hosp' ? 2 : s.th;
+      const activeProp = cutScene === 'epilogue_village' ? 'v' : cutScene === 'epilogue_hosp' ? 'h' : s.p;
+      const th = TH[activeTh];
       const o = cam;
 
       th.in ? indoor(th) : outdoor(th);
-      props();
+      props(activeProp);
 
       const bob = Math.round(Math.sin(T / 12) * 2);
 
-      S[idx].n.forEach((n, i) => {
-        if (n.q && !F[n.q]) return;
-        if (n.j && dn[i] && F.family) return;
-        if (idx === 7 && i === 0) return;
-        person(n.x - o, FY, n.c, px < n.x ? -1 : 1, 0);
-        if (!dn[i] && mode !== 'fade') {
-          R(n.x - o - 1, FY - 36 + bob, 2, 5, '#ffe58a');
-          R(n.x - o - 1, FY - 29 + bob, 2, 2, '#ffe58a');
-        }
-      });
+      // 에필로그 컷씬 전용 연출
+      if (cutScene === 'epilogue_village') {
+        person(px + 42 - o, FY, SO, -1, 0); // 소페아 아주머니
+        kid(px + 20 - o, FY, DA, 1, 0);     // 건강해진 다라
+        dog(px - 18 - o, FY, 1, 0);         // 강아지 콩
+        person(px - o, FY, ME, 1, 0);       // 마야
+      } else if (cutScene === 'epilogue_hosp') {
+        dog(px - 22 - o, FY, 1, 0);         // 강아지 콩
+        person(px - o, FY, NURSE_MAYA, 1, 0); // 간호 실습복 입은 마야
+      } else {
+        S[idx].n.forEach((n, i) => {
+          if (n.q && !F[n.q]) return;
+          if (n.j && dn[i] && F.family) return;
+          if (idx === 7 && i === 0) return;
+          person(n.x - o, FY, n.c, px < n.x ? -1 : 1, 0);
+          if (!dn[i] && mode !== 'fade') {
+            R(n.x - o - 1, FY - 36 + bob, 2, 5, '#ffe58a');
+            R(n.x - o - 1, FY - 29 + bob, 2, 2, '#ffe58a');
+          }
+        });
 
-      if (idx === 7) {
-        R(362 - o, FY - 21, 8, 6, SK);
-        R(362 - o, FY - 23, 8, 3, '#2a1f2d');
-        if (!dn[0] && mode !== 'fade') {
-          R(365 - o, FY - 34 + bob, 2, 5, '#ffe58a');
-          R(365 - o, FY - 27 + bob, 2, 2, '#ffe58a');
-        }
-      }
-
-      if (!riding) {
-        for (const k of ['b', 'c', 'g', 'd']) {
-          if (has(k)) {
-            const d = px > pos[k] ? 1 : -1;
-            if (k === 'g') dog(pos[k] - o, FY, d, mv);
-            else if (k === 'c') person(pos[k] - o, FY, CH, d, mv);
-            else kid(pos[k] - o, FY, k === 'd' ? DA : BI, d, mv);
+        // 회복실 다라 연출: 침대에 누워 있다가 대화를 마친 뒤 침대 옆에 건강하게 서 있음
+        if (idx === 7) {
+          if (!dn[0]) {
+            R(362 - o, FY - 21, 8, 6, SK);
+            R(362 - o, FY - 23, 8, 3, '#2a1f2d');
+            if (mode !== 'fade') {
+              R(365 - o, FY - 34 + bob, 2, 5, '#ffe58a');
+              R(365 - o, FY - 27 + bob, 2, 2, '#ffe58a');
+            }
+          } else {
+            kid(425 - o, FY, DA, px < 425 ? -1 : 1, 0);
           }
         }
-        person(px - o, FY, ME, dir, mv);
-      } else {
-        vehicle();
-      }
 
-      S[idx].n.forEach(n => {
-        if (n.ds) {
-          R(n.x - 20 - o, FY - 12, 40, 3, '#8a6a43');
-          R(n.x - 18 - o, FY - 9, 36, 10, '#a67c52');
+        if (!riding) {
+          for (const k of ['b', 'c', 'g', 'd']) {
+            if (has(k)) {
+              const d = px > pos[k] ? 1 : -1;
+              if (k === 'g') dog(pos[k] - o, FY, d, mv);
+              else if (k === 'c') person(pos[k] - o, FY, CH, d, mv);
+              else kid(pos[k] - o, FY, k === 'd' ? DA : BI, d, mv);
+            }
+          }
+          person(px - o, FY, ME, dir, mv);
+        } else {
+          vehicle();
         }
-      });
+
+        S[idx].n.forEach(n => {
+          if (n.ds) {
+            R(n.x - 20 - o, FY - 12, 40, 3, '#8a6a43');
+            R(n.x - 18 - o, FY - 9, 36, 10, '#a67c52');
+          }
+        });
+
+        // 수술실 대기 연출 (붉은 수술중 표시등)
+        if (cutScene === 'surgery') {
+          R(330 - o, 36, 22, 22, '#c0392b');
+          R(334 - o, 45, 14, 4, '#ffe58a');
+        }
+      }
 
       if (mode !== 'fade' && mode !== 'title' && !riding && open()) {
         const ax = W - 30 - o + Math.round(Math.sin(T / 8) * 2);
@@ -1166,14 +1192,27 @@
     }
 
     const has = k => {
-      if (k === 'd') return idx < 6;
+      if (k === 'd') return idx <= 6 && cutScene !== 'surgery'; // 진료실(6)까지 다라 동행 (수술실 입실 시 제외)
       if (k === 'g') return idx <= 4; // 1단계(마을)부터 5단계(갈림길)까지 콩 동행
       return !!F.family && (idx === 3 || idx === 4);
     };
 
     function spp(nm) {
+      if (cutScene === 'epilogue_village') {
+        if (nm === 'MAYA' || nm === '마야') return [px, 28];
+        if (nm === '소페아') return [px + 42, 28];
+        if (nm === '다라') return [px + 20, 20];
+        return null;
+      }
+      if (cutScene === 'epilogue_hosp') {
+        if (nm === 'MAYA' || nm === '마야') return [px, 28];
+        return null;
+      }
       if (nm === 'MAYA' || nm === '마야') return [riding ? vx : px, 28];
-      if (nm === '다라') return idx === 7 ? [366, 24] : has('d') ? [pos.d, 20] : null;
+      if (nm === '다라') {
+        if (idx === 7) return [!dn[0] ? 366 : 425, !dn[0] ? 24 : 20];
+        return has('d') ? [pos.d, 20] : null;
+      }
       if (nm === '찬타' && has('c')) return [pos.c, 28];
       const L = S[idx].n;
       const n = L.find((m, i) => ok(m) && m.n.includes(nm) && !(m.j && dn[i] && F.family));
@@ -1245,6 +1284,7 @@
       px = 40;
       cam = 0;
       bt = '';
+      cutScene = '';
       dn = s.n.map(() => 0);
       for (const k in OFF) pos[k] = px - OFF[k];
       riding = false;
@@ -1266,6 +1306,22 @@
       const p = l.includes('|') ? l.split('|') : ['결과', l];
       bs = p[0];
       bt = p.slice(1).join('|');
+
+      // 대사 멘트 내용에 따라 화면 배경/상황 즉시 전환
+      if (bt.includes('수술실 불이 켜지고')) {
+        cutScene = 'surgery';
+        $('loc').textContent = '📍 헤브론의료원 · 수술실 앞 복도';
+        hud();
+      } else if (bt.includes('며칠 뒤, 마을로 돌아온 날')) {
+        cutScene = 'epilogue_village';
+        $('loc').textContent = '📍 며칠 뒤 · 고향 마을';
+        hud();
+      } else if (bt.includes('그리고 1년 뒤')) {
+        cutScene = 'epilogue_hosp';
+        $('loc').textContent = '📍 1년 뒤 · 헤브론의료원 앞마당';
+        hud();
+      }
+
       $('ch').innerHTML = '';
       sfx('talk');
       hint('[E] / [Space] / ✋ 버튼 · 화면을 눌러 계속');
@@ -1337,7 +1393,7 @@
       money = Math.max(0, money - cost);
       mins += addMins;
       chT += addMins;
-      hp = clamp(hp + addHp, 1, 5); // 최소 1 유지로 서사 단절 방지
+      hp = clamp(hp + addHp, 1, 5);
 
       if (c[6]) F[c[6]] = 1;
       if (c[6] === 'family') {
@@ -1499,6 +1555,7 @@
       mins = 0;
       playMins = 0;
       lastClock = '';
+      cutScene = '';
       hp = 5;
       F = {};
       tr = '';
