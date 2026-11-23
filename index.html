@@ -1,7 +1,63 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#172f2b"><title>HEBRON QUEST · 생명을 향한 여정</title><link rel="stylesheet" href="css/game.css"></head><body>
-<header class="topbar"><a class="brand" href="#"><span class="cross">✚</span><span>HEBRON <b>QUEST</b><small>A JOURNEY FOR LIFE · 20 YEARS</small></span></a><div class="topstats"><span>✦ <b id="xp">0</b> XP</span><span>🏅 <b id="bc">0</b></span><span>LV <b id="level">1</b></span><button id="sound" class="sound">♫ 사운드 OFF</button></div></header>
-<main class="layout"><aside class="sidebar"><div class="side-title">YOUR JOURNEY <span>01 — 05</span></div><div id="chapters" class="chapter-list"></div><div class="profile"><div class="profile-head"><span>탐험 기록</span><strong id="level-name">새로운 여정</strong></div><div class="progress-track"><i id="progress"></i></div><div class="progress-meta"><span id="progress-label">0 / 5 미션</span><span id="progress-pct">0%</span></div><div id="badges" class="badges"><span class="empty">아직 획득한 배지가 없습니다.</span></div></div><div class="side-note">작은 선택이 모여<br><b>생명을 향한 여정</b>이 됩니다.</div></aside>
-<section class="game-panel"><div class="scene-heading"><div><div class="eyebrow" id="chapter">CHAPTER 01 · THE VILLAGE</div><h1 id="title">병원이 없는 마을</h1></div><div class="location" id="place">캄보디아 농촌 마을</div></div>
-<div id="world" class="world village"><div class="sky-glow"></div><div class="sun"></div><div class="cloud cloud-a"></div><div class="cloud cloud-b"></div><div class="distant-hill hill-a"></div><div class="distant-hill hill-b"></div><div class="field"></div><div class="path"></div><div class="tree tree-a"></div><div class="tree tree-b"></div><div id="building" class="building"><span class="roof"></span><span class="house-body"></span><span class="door"></span></div><div class="scene-sign" id="scene-sign">VILLAGE</div><div id="npc" class="pixel-person npc"><i class="hair"></i><i class="face"></i><i class="body"></i><i class="legs"></i></div><div id="hero" class="pixel-person hero"><i class="hair"></i><i class="face"></i><i class="body"></i><i class="legs"></i><span class="shadow"></span></div><div class="speech-card" id="speech-card"><div class="speaker-row"><span class="speaker-dot"></span><b id="speaker">마을 주민</b><span class="speech-count" id="line-count">01 / 03</span></div><p id="dialogue">우리 마을에서 병원까지는 먼 길이에요.</p><button id="talk" class="primary">대화 계속하기 <span>→</span></button></div><div id="choices" class="choice-panel hidden"><div class="choice-kicker">MAKE A CHOICE</div><h2 id="question">어떻게 할까요?</h2><div id="options" class="options"></div></div><div id="result" class="ending hidden"></div><div class="scene-caption">CAMBODIA · A STORY OF CARE</div></div>
-<div class="game-controls"><div class="controls-hint">이동 <kbd>←</kbd><kbd>→</kbd>　상호작용 <kbd>SPACE</kbd> <kbd>ENTER</kbd></div><div class="control-buttons"><button id="left" class="move-btn">←</button><button id="interact" class="primary small">대화 / 선택</button><button id="right" class="move-btn">→</button><button id="reset" class="reset-btn">초기화</button></div></div><div class="mission-card"><div class="mission-icon">✦</div><div class="mission-copy"><b>현재 미션</b><span id="mission">마을 주민의 이야기를 들어보세요.</span></div><strong id="reward">+50 XP</strong></div></section></main>
-<div id="modal" class="modal hidden" role="dialog" aria-modal="true"><section class="modal-card"><div class="modal-spark" id="medal">✦</div><div class="eyebrow">MISSION CLEAR</div><h2 id="mtitle">미션 완료!</h2><p id="mtext"></p><div class="earned" id="earned"></div><button id="next" class="primary">다음 챕터로 <span>→</span></button></section></div><script src="js/story.js"></script><script src="js/audio.js"></script><script src="js/game.js"></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5efe4">
+<title>HEBRON QUEST · 생명을 향한 20년</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Hebron Quest 홈"><span class="brand-mark">✚</span><span><b>HEBRON QUEST</b><small>A JOURNEY FOR LIFE · 20TH ANNIVERSARY</small></span></a>
+  <div class="top-actions"><span class="stat">✦ <b id="topXP">0</b> XP</span><span class="stat">🏅 <b id="topBadges">0</b></span><button id="soundOpen" class="sound-btn">♫ 사운드 설정</button></div>
+</header>
+<main>
+<section id="homeView" class="home-view">
+  <div class="hero-banner">
+    <img src="assets/village-road.png" alt="캄보디아 마을에서 헤브론의료원으로 이어지는 길">
+    <div class="hero-shade"></div>
+    <div class="hero-copy"><span class="eyebrow light">HEBRON MEDICAL CENTER · 20 YEARS</span><h1>생명을 향한<br><em>여정이 시작됩니다.</em></h1><p>한 사람의 선택에서 시작된 이야기가<br>마을과 병원, 그리고 다음 세대로 이어집니다.</p><button id="startGame" class="cta">여정 시작하기 <span>→</span></button></div>
+    <div class="hero-stamp">20<span>YEARS</span></div>
+  </div>
+  <div class="home-grid">
+    <section class="panel journey-panel"><div class="section-head"><div><span class="eyebrow">YOUR JOURNEY</span><h2>나의 탐험 기록</h2></div><span class="level-pill">LEVEL <b id="homeLevel">1</b></span></div>
+      <div class="xp-line"><b id="homeXP">0 XP</b><span id="homeProgressText">0 / 5 챕터</span></div><div class="progress"><i id="homeProgress"></i></div>
+      <div class="mini-stats"><div><b id="homeMissions">0</b><small>완료 미션</small></div><div><b id="homeBadgeCount">0</b><small>획득 배지</small></div><div><b id="homeLevelName">새로운 여정</b><small>현재 칭호</small></div></div>
+    </section>
+    <section class="panel sound-panel"><span class="eyebrow">IMMERSIVE EXPERIENCE</span><h2>소리와 함께하는 이야기</h2><p>캄보디아의 자연을 닮은 환경음, 장면에 어울리는 효과음, 브라우저 음성 안내를 선택해 즐겨보세요.</p><button class="subtle-btn" id="soundOpen2">오디오 설정 열기 <span>↗</span></button></section>
+  </div>
+  <section class="chapter-section"><div class="section-head"><div><span class="eyebrow">CHAPTERS & MISSIONS</span><h2>생명을 향한 다섯 개의 장</h2></div><span class="muted">완료한 챕터는 언제든 다시 플레이할 수 있어요.</span></div><div id="homeChapters" class="chapter-grid"></div></section>
+  <footer>HEBRON MEDICAL CENTER <span>·</span> 20 YEARS OF CARE, HOPE & LIFE</footer>
+</section>
+
+<section id="gameView" class="game-view hidden">
+  <div class="game-toolbar"><button id="backHome" class="back-btn">← 홈으로</button><div class="game-stats"><span>✦ <b id="gameXP">0</b> XP</span><span>🏅 <b id="gameBadges">0</b></span><span>LV <b id="gameLevel">1</b></span></div></div>
+  <div class="game-layout">
+    <aside class="game-sidebar"><div class="sidebar-label">YOUR STORY</div><div id="sideChapters"></div><div class="mission-box"><span class="eyebrow">CURRENT MISSION</span><b id="missionTitle">마을의 이야기를 들어보세요.</b><div class="mission-reward">보상 <strong id="missionXP">+50 XP</strong></div></div><div class="badge-box"><span class="eyebrow">COLLECTED BADGES</span><div id="badgeList">아직 배지가 없어요.</div></div></aside>
+    <section class="play-area">
+      <div class="play-heading"><div><span id="chapterCode" class="eyebrow">CHAPTER 01</span><h1 id="chapterTitle">병원이 없는 마을</h1></div><span id="placeName" class="place-tag">캄보디아 농촌 마을</span></div>
+      <div id="scene" class="scene">
+        <img id="sceneImage" src="assets/village-road.png" alt="">
+        <div class="scene-vignette"></div><div class="scene-location" id="sceneLocation">CAMBODIA · THE VILLAGE</div>
+        <div class="character-chip" id="characterChip"><span class="avatar">👧🏽</span><span><b id="speaker">마을 주민</b><small>STORY CHARACTER</small></span></div>
+        <div id="dialogueCard" class="dialogue-card"><div class="dialogue-top"><span class="dialogue-dot"></span><b id="dialogueSpeaker">마을 주민</b><span id="lineNo">01 / 03</span></div><p id="dialogueText"></p><button id="continueBtn" class="continue-btn">이야기 계속 듣기 <span>→</span></button></div>
+        <div id="choiceCard" class="choice-card hidden"><span class="eyebrow">YOUR CHOICE MATTERS</span><h2 id="choiceQuestion">어떤 선택을 할까요?</h2><div id="choiceOptions" class="choice-options"></div></div>
+        <div id="endingCard" class="ending-card hidden"></div>
+      </div>
+      <div class="play-footer"><div class="hint">키보드 <kbd>SPACE</kbd> / <kbd>ENTER</kbd> 로 진행</div><div class="move-controls"><button id="prevLine" aria-label="이전 대사">←</button><button id="nextLine" class="next-control">계속하기</button></div></div>
+      <div class="chapter-progress"><span id="chapterProgressLabel">챕터 1 / 5</span><div class="progress"><i id="chapterProgress"></i></div><span id="chapterPercent">20%</span></div>
+    </section>
+  </div>
+</section>
+</main>
+
+<div id="completeModal" class="modal hidden"><div class="modal-card"><div class="modal-icon" id="modalIcon">✦</div><span class="eyebrow">MISSION COMPLETE</span><h2 id="modalTitle">미션 완료!</h2><p id="modalText"></p><div id="modalReward" class="modal-reward"></div><button id="modalNext" class="cta">다음 챕터로 <span>→</span></button></div></div>
+<div id="audioModal" class="modal hidden"><div class="audio-card"><button id="closeAudio" class="close-btn">×</button><span class="eyebrow">SOUND EXPERIENCE</span><h2>오디오 설정</h2><p class="audio-intro">소리는 처음에는 꺼져 있습니다. 버튼을 눌러 원하는 기능을 켜주세요.</p>
+  <label class="audio-row"><span><b>자연 환경음</b><small>새소리와 바람을 닮은 잔잔한 앰비언스</small></span><input type="checkbox" id="ambienceToggle"></label>
+  <label class="audio-row"><span><b>효과음</b><small>선택, 미션 완료, 장면 전환 사운드</small></span><input type="checkbox" id="fxToggle" checked></label>
+  <label class="audio-row"><span><b>음성 안내</b><small>브라우저 음성 합성으로 대사 읽기</small></span><input type="checkbox" id="voiceToggle" checked></label>
+  <div class="voice-choice"><label for="voiceLang">음성 언어</label><select id="voiceLang"><option value="ko-KR">한국어</option><option value="km-KH">크메르어 (지원 음성 설치 시)</option></select></div>
+  <p class="audio-note">※ 음성은 기기와 브라우저에 설치된 음성에 따라 발음과 지원 여부가 달라질 수 있습니다. 실제 녹음 음성은 포함되어 있지 않습니다.</p>
+</div></div>
+<script src="js/story.js"></script><script src="js/audio.js"></script><script src="js/game.js"></script>
+</body></html>
